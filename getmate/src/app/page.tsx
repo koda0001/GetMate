@@ -1,8 +1,6 @@
 import { auth } from "@/server/auth";
 import { db } from "@/server/db";
 import Link from "next/link";
-import { createProject } from "./actions";
-import { SubmitButton } from "@/app/components/SubmitButton";
 import { ProjectCard } from "./components/ProjectCard";
 
 export default async function HomePage() {
@@ -10,17 +8,13 @@ export default async function HomePage() {
   const session = await auth();
 
   // 2. Fetch Projects and Posts in parallel for speed
-  const [projects, posts] = await Promise.all([
+  const [projects] = await Promise.all([
     db.project.findMany({
       orderBy: { createdAt: "desc" },
       include: { author: true },
-    }),
-    db.post.findMany({
-      orderBy: { createdAt: "desc" },
-      include: { createdBy: true },
-    }),
+    })
   ]);
-
+  
   return (
     <main className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-6xl mx-auto">
@@ -45,50 +39,32 @@ export default async function HomePage() {
             placeholder="Fun project">
             
             </input>
-            <div className="grid grid-cols-1 p-10 gap-4">
-              {projects.map((project) => (
-                <ProjectCard key={project.id} project={project} />
-              ))}
-              {projects.length === 0 && <p className="text-gray-400 italic">No projects shared yet...</p>}
-            </div>
+              <div className="grid grid-cols-1 p-10 gap-4">
+                {projects.map((project) => (
+                    <ProjectCard key={project.id} project={project} />
+                ))}
+                {projects.length === 0 && <p className="text-gray-400 italic">No projects shared yet...</p>}
+              </div>
           </section>
 
-          <div className="bg-white p-6 rounded-xl border-2 border-dashed mb-8">
-              <h2 className="text-xl font-bold mb-4">Start a New Project</h2>
-              <form action={createProject} className="space-y-4">
-                <input 
-                  name="title" 
-                  placeholder="Project Title" 
-                  className="w-full p-2 border rounded-md"
-                  required 
-                />
-                <textarea 
-                  name="description" 
-                  placeholder="Describe your idea..." 
-                  className="w-full p-2 border rounded-md h-24"
-                  required 
-                />
-                <SubmitButton />
-              </form>
-            </div>
 
-          {/* Social Posts Column */}
-          <aside className="space-y-6">
-            <h2 className="text-2xl font-bold">💬 Recent Updates</h2> 
-            <div className="space-y-4">
-              {posts.map((post) => (
-                <div key={post.id} className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
-                  <p className="text-gray-800 mb-3">{post.name}</p>
-                  <div className="flex items-center gap-2">
-                    <img src={post.createdBy.image!} className="w-5 h-5 rounded-full" />
-                    <span className="text-[10px] uppercase font-bold text-gray-400 tracking-widest">
-                      {post.createdBy.name}
-                    </span>
-                  </div>
-                </div>
-              ))}
+
+          {/* Setting Column */}
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold text-right">MENU</h2> 
+            <div className="grid grid-cols-1 p-10 gap-4 text-right">
+              <Link
+                href="/new_project"
+                className="w-full bg-blue-600 text-white py-2 pr-2 rounded-lg font-bold active:bg-blue-700 active:scale-95">
+                New Project
+              </Link>
+              <Link
+                href="/"
+                className="w-full bg-blue-600 text-white py-2 pr-2 rounded-lg font-bold active:bg-blue-700 active:scale-95">
+                Settings
+              </Link>
             </div>
-          </aside>
+          </div>
         </div>
       </div>
     </main>

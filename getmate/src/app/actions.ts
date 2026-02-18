@@ -3,6 +3,7 @@
 import { db } from "@/server/db";
 import { auth } from "@/server/auth";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 // Each exported function is a "Job" the front-end can ask the server to do.
 export async function createProject(formData: FormData) {
@@ -13,17 +14,75 @@ export async function createProject(formData: FormData) {
   // 2. DATA COLLECTION (The Ingredients)
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
+  const github = formData.get("github") as string;
+  const slots = Number(formData.get("slots"));
+
 
   // 3. DATABASE EXECUTION (The Chef)
   await db.project.create({
     data: {
       title,
       description,
+      github,
+      slots,
       authorId: session.user.id,
     },
   });
 
   // 4. UI UPDATE (The Notification)
   // This tells Next.js: "Hey, the list of projects changed, refresh the page!"
-  revalidatePath("/");
+  redirect("/");
+}
+
+
+export async function updateProject(formData: FormData) {
+  // 1. AUTHENTICATION (The Bouncer)
+  const session = await auth();
+  if (!session) throw new Error("Log in first!");
+
+  // 2. DATA COLLECTION (The Ingredients)
+  const projectId = formData.get("projectId") as string;
+  const title = formData.get("title") as string;
+  const description = formData.get("description") as string;
+  const github = formData.get("github") as string;
+  const slots = Number(formData.get("slots"));
+
+
+  // 3. DATABASE EXECUTION (The Chef)
+  await db.project.update({
+    where: {
+      id: projectId
+    },
+    data: {
+      title: title,
+      description: description,
+      github: github,
+      slots: slots,
+      authorId: session.user.id,
+    },
+  });
+
+  // 4. UI UPDATE (The Notification)
+  // This tells Next.js: "Hey, the list of projects changed, refresh the page!"
+  redirect("/");
+}
+
+export async function deleteProject(formData: FormData) {
+  // 1. AUTHENTICATION (The Bouncer)
+  const session = await auth();
+  if (!session) throw new Error("Log in first!");
+
+  // 2. DATA COLLECTION (The Ingredients)
+  const projectId = formData.get("projectId") as string;
+
+  // 3. DATABASE EXECUTION (The Chef)
+  await db.project.delete({
+    where: {
+      id: projectId
+    }
+  });
+
+  // 4. UI UPDATE (The Notification)
+  // This tells Next.js: "Hey, the list of projects changed, refresh the page!"
+  redirect("/");
 }

@@ -6839,14 +6839,26 @@ export namespace Prisma {
 
   export type AggregateProject = {
     _count: ProjectCountAggregateOutputType | null
+    _avg: ProjectAvgAggregateOutputType | null
+    _sum: ProjectSumAggregateOutputType | null
     _min: ProjectMinAggregateOutputType | null
     _max: ProjectMaxAggregateOutputType | null
+  }
+
+  export type ProjectAvgAggregateOutputType = {
+    slots: number | null
+  }
+
+  export type ProjectSumAggregateOutputType = {
+    slots: number | null
   }
 
   export type ProjectMinAggregateOutputType = {
     id: string | null
     title: string | null
     description: string | null
+    slots: number | null
+    github: string | null
     link: string | null
     createdAt: Date | null
     authorId: string | null
@@ -6856,6 +6868,8 @@ export namespace Prisma {
     id: string | null
     title: string | null
     description: string | null
+    slots: number | null
+    github: string | null
     link: string | null
     createdAt: Date | null
     authorId: string | null
@@ -6865,6 +6879,9 @@ export namespace Prisma {
     id: number
     title: number
     description: number
+    slots: number
+    subscribers: number
+    github: number
     link: number
     createdAt: number
     authorId: number
@@ -6872,10 +6889,20 @@ export namespace Prisma {
   }
 
 
+  export type ProjectAvgAggregateInputType = {
+    slots?: true
+  }
+
+  export type ProjectSumAggregateInputType = {
+    slots?: true
+  }
+
   export type ProjectMinAggregateInputType = {
     id?: true
     title?: true
     description?: true
+    slots?: true
+    github?: true
     link?: true
     createdAt?: true
     authorId?: true
@@ -6885,6 +6912,8 @@ export namespace Prisma {
     id?: true
     title?: true
     description?: true
+    slots?: true
+    github?: true
     link?: true
     createdAt?: true
     authorId?: true
@@ -6894,6 +6923,9 @@ export namespace Prisma {
     id?: true
     title?: true
     description?: true
+    slots?: true
+    subscribers?: true
+    github?: true
     link?: true
     createdAt?: true
     authorId?: true
@@ -6938,6 +6970,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: ProjectAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ProjectSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: ProjectMinAggregateInputType
@@ -6968,6 +7012,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: ProjectCountAggregateInputType | true
+    _avg?: ProjectAvgAggregateInputType
+    _sum?: ProjectSumAggregateInputType
     _min?: ProjectMinAggregateInputType
     _max?: ProjectMaxAggregateInputType
   }
@@ -6976,10 +7022,15 @@ export namespace Prisma {
     id: string
     title: string
     description: string
+    slots: number
+    subscribers: string[]
+    github: string | null
     link: string | null
     createdAt: Date
     authorId: string
     _count: ProjectCountAggregateOutputType | null
+    _avg: ProjectAvgAggregateOutputType | null
+    _sum: ProjectSumAggregateOutputType | null
     _min: ProjectMinAggregateOutputType | null
     _max: ProjectMaxAggregateOutputType | null
   }
@@ -7002,6 +7053,9 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     description?: boolean
+    slots?: boolean
+    subscribers?: boolean
+    github?: boolean
     link?: boolean
     createdAt?: boolean
     authorId?: boolean
@@ -7012,6 +7066,9 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     description?: boolean
+    slots?: boolean
+    subscribers?: boolean
+    github?: boolean
     link?: boolean
     createdAt?: boolean
     authorId?: boolean
@@ -7022,6 +7079,9 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     description?: boolean
+    slots?: boolean
+    subscribers?: boolean
+    github?: boolean
     link?: boolean
     createdAt?: boolean
     authorId?: boolean
@@ -7032,12 +7092,15 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     description?: boolean
+    slots?: boolean
+    subscribers?: boolean
+    github?: boolean
     link?: boolean
     createdAt?: boolean
     authorId?: boolean
   }
 
-  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "link" | "createdAt" | "authorId", ExtArgs["result"]["project"]>
+  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "slots" | "subscribers" | "github" | "link" | "createdAt" | "authorId", ExtArgs["result"]["project"]>
   export type ProjectInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     author?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -7057,6 +7120,9 @@ export namespace Prisma {
       id: string
       title: string
       description: string
+      slots: number
+      subscribers: string[]
+      github: string | null
       link: string | null
       createdAt: Date
       authorId: string
@@ -7487,6 +7553,9 @@ export namespace Prisma {
     readonly id: FieldRef<"Project", 'String'>
     readonly title: FieldRef<"Project", 'String'>
     readonly description: FieldRef<"Project", 'String'>
+    readonly slots: FieldRef<"Project", 'Int'>
+    readonly subscribers: FieldRef<"Project", 'String[]'>
+    readonly github: FieldRef<"Project", 'String'>
     readonly link: FieldRef<"Project", 'String'>
     readonly createdAt: FieldRef<"Project", 'DateTime'>
     readonly authorId: FieldRef<"Project", 'String'>
@@ -7982,6 +8051,9 @@ export namespace Prisma {
     id: 'id',
     title: 'title',
     description: 'description',
+    slots: 'slots',
+    subscribers: 'subscribers',
+    github: 'github',
     link: 'link',
     createdAt: 'createdAt',
     authorId: 'authorId'
@@ -8397,6 +8469,9 @@ export namespace Prisma {
     id?: StringFilter<"Project"> | string
     title?: StringFilter<"Project"> | string
     description?: StringFilter<"Project"> | string
+    slots?: IntFilter<"Project"> | number
+    subscribers?: StringNullableListFilter<"Project">
+    github?: StringNullableFilter<"Project"> | string | null
     link?: StringNullableFilter<"Project"> | string | null
     createdAt?: DateTimeFilter<"Project"> | Date | string
     authorId?: StringFilter<"Project"> | string
@@ -8407,6 +8482,9 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     description?: SortOrder
+    slots?: SortOrder
+    subscribers?: SortOrder
+    github?: SortOrderInput | SortOrder
     link?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     authorId?: SortOrder
@@ -8420,6 +8498,9 @@ export namespace Prisma {
     NOT?: ProjectWhereInput | ProjectWhereInput[]
     title?: StringFilter<"Project"> | string
     description?: StringFilter<"Project"> | string
+    slots?: IntFilter<"Project"> | number
+    subscribers?: StringNullableListFilter<"Project">
+    github?: StringNullableFilter<"Project"> | string | null
     link?: StringNullableFilter<"Project"> | string | null
     createdAt?: DateTimeFilter<"Project"> | Date | string
     authorId?: StringFilter<"Project"> | string
@@ -8430,12 +8511,17 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     description?: SortOrder
+    slots?: SortOrder
+    subscribers?: SortOrder
+    github?: SortOrderInput | SortOrder
     link?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     authorId?: SortOrder
     _count?: ProjectCountOrderByAggregateInput
+    _avg?: ProjectAvgOrderByAggregateInput
     _max?: ProjectMaxOrderByAggregateInput
     _min?: ProjectMinOrderByAggregateInput
+    _sum?: ProjectSumOrderByAggregateInput
   }
 
   export type ProjectScalarWhereWithAggregatesInput = {
@@ -8445,6 +8531,9 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Project"> | string
     title?: StringWithAggregatesFilter<"Project"> | string
     description?: StringWithAggregatesFilter<"Project"> | string
+    slots?: IntWithAggregatesFilter<"Project"> | number
+    subscribers?: StringNullableListFilter<"Project">
+    github?: StringNullableWithAggregatesFilter<"Project"> | string | null
     link?: StringNullableWithAggregatesFilter<"Project"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Project"> | Date | string
     authorId?: StringWithAggregatesFilter<"Project"> | string
@@ -8779,6 +8868,9 @@ export namespace Prisma {
     id?: string
     title: string
     description: string
+    slots?: number
+    subscribers?: ProjectCreatesubscribersInput | string[]
+    github?: string | null
     link?: string | null
     createdAt?: Date | string
     author: UserCreateNestedOneWithoutProjectsInput
@@ -8788,6 +8880,9 @@ export namespace Prisma {
     id?: string
     title: string
     description: string
+    slots?: number
+    subscribers?: ProjectCreatesubscribersInput | string[]
+    github?: string | null
     link?: string | null
     createdAt?: Date | string
     authorId: string
@@ -8797,6 +8892,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    slots?: IntFieldUpdateOperationsInput | number
+    subscribers?: ProjectUpdatesubscribersInput | string[]
+    github?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     author?: UserUpdateOneRequiredWithoutProjectsNestedInput
@@ -8806,6 +8904,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    slots?: IntFieldUpdateOperationsInput | number
+    subscribers?: ProjectUpdatesubscribersInput | string[]
+    github?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     authorId?: StringFieldUpdateOperationsInput | string
@@ -8815,6 +8916,9 @@ export namespace Prisma {
     id?: string
     title: string
     description: string
+    slots?: number
+    subscribers?: ProjectCreatesubscribersInput | string[]
+    github?: string | null
     link?: string | null
     createdAt?: Date | string
     authorId: string
@@ -8824,6 +8928,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    slots?: IntFieldUpdateOperationsInput | number
+    subscribers?: ProjectUpdatesubscribersInput | string[]
+    github?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -8832,6 +8939,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    slots?: IntFieldUpdateOperationsInput | number
+    subscribers?: ProjectUpdatesubscribersInput | string[]
+    github?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     authorId?: StringFieldUpdateOperationsInput | string
@@ -9220,19 +9330,36 @@ export namespace Prisma {
     expires?: SortOrder
   }
 
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
   export type ProjectCountOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
     description?: SortOrder
+    slots?: SortOrder
+    subscribers?: SortOrder
+    github?: SortOrder
     link?: SortOrder
     createdAt?: SortOrder
     authorId?: SortOrder
+  }
+
+  export type ProjectAvgOrderByAggregateInput = {
+    slots?: SortOrder
   }
 
   export type ProjectMaxOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
     description?: SortOrder
+    slots?: SortOrder
+    github?: SortOrder
     link?: SortOrder
     createdAt?: SortOrder
     authorId?: SortOrder
@@ -9242,9 +9369,15 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     description?: SortOrder
+    slots?: SortOrder
+    github?: SortOrder
     link?: SortOrder
     createdAt?: SortOrder
     authorId?: SortOrder
+  }
+
+  export type ProjectSumOrderByAggregateInput = {
+    slots?: SortOrder
   }
 
   export type UserCreateNestedOneWithoutPostsInput = {
@@ -9489,10 +9622,19 @@ export namespace Prisma {
     deleteMany?: ProjectScalarWhereInput | ProjectScalarWhereInput[]
   }
 
+  export type ProjectCreatesubscribersInput = {
+    set: string[]
+  }
+
   export type UserCreateNestedOneWithoutProjectsInput = {
     create?: XOR<UserCreateWithoutProjectsInput, UserUncheckedCreateWithoutProjectsInput>
     connectOrCreate?: UserCreateOrConnectWithoutProjectsInput
     connect?: UserWhereUniqueInput
+  }
+
+  export type ProjectUpdatesubscribersInput = {
+    set?: string[]
+    push?: string | string[]
   }
 
   export type UserUpdateOneRequiredWithoutProjectsNestedInput = {
@@ -9960,6 +10102,9 @@ export namespace Prisma {
     id?: string
     title: string
     description: string
+    slots?: number
+    subscribers?: ProjectCreatesubscribersInput | string[]
+    github?: string | null
     link?: string | null
     createdAt?: Date | string
   }
@@ -9968,6 +10113,9 @@ export namespace Prisma {
     id?: string
     title: string
     description: string
+    slots?: number
+    subscribers?: ProjectCreatesubscribersInput | string[]
+    github?: string | null
     link?: string | null
     createdAt?: Date | string
   }
@@ -10093,6 +10241,9 @@ export namespace Prisma {
     id?: StringFilter<"Project"> | string
     title?: StringFilter<"Project"> | string
     description?: StringFilter<"Project"> | string
+    slots?: IntFilter<"Project"> | number
+    subscribers?: StringNullableListFilter<"Project">
+    github?: StringNullableFilter<"Project"> | string | null
     link?: StringNullableFilter<"Project"> | string | null
     createdAt?: DateTimeFilter<"Project"> | Date | string
     authorId?: StringFilter<"Project"> | string
@@ -10190,6 +10341,9 @@ export namespace Prisma {
     id?: string
     title: string
     description: string
+    slots?: number
+    subscribers?: ProjectCreatesubscribersInput | string[]
+    github?: string | null
     link?: string | null
     createdAt?: Date | string
   }
@@ -10281,6 +10435,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    slots?: IntFieldUpdateOperationsInput | number
+    subscribers?: ProjectUpdatesubscribersInput | string[]
+    github?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -10289,6 +10446,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    slots?: IntFieldUpdateOperationsInput | number
+    subscribers?: ProjectUpdatesubscribersInput | string[]
+    github?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -10297,6 +10457,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    slots?: IntFieldUpdateOperationsInput | number
+    subscribers?: ProjectUpdatesubscribersInput | string[]
+    github?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
