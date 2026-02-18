@@ -172,6 +172,7 @@ exports.Prisma.ProjectScalarFieldEnum = {
   description: 'description',
   slots: 'slots',
   subscribers: 'subscribers',
+  private: 'private',
   github: 'github',
   link: 'link',
   createdAt: 'createdAt',

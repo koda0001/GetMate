@@ -42,7 +42,7 @@ export function SlotsGrid({ project }: { project: any }) {
           <div key={i} className="animate-in fade-in slide-in-from-left-2 duration-200">
             <label className="text-xs font-bold text-gray-400">Slot Info #{i + 1}</label>
             <input
-              name={`slot_data_${i}`}
+              name={"slot_description"}
               placeholder={`Opis dla slotu ${i + 1}`}
               defaultValue={project.subscribers?.[i] || ""}
               className="w-full p-2 border rounded-md bg-gray-50 focus:bg-white transition-colors"

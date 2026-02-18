@@ -8,7 +8,7 @@ generator client {
 
 datasource db {
     provider = "postgresql"
-    url      = env("DATABASE_URL")
+    url      = env("DATABASE_URL") //this works, let it be
 }
 
 model Post {
@@ -77,6 +77,7 @@ model Project {
   description String
   slots       Int      @default(1)
   subscribers String[]
+  private     Boolean  @default(false)
   github      String?
   link        String?
   createdAt   DateTime @default(now())

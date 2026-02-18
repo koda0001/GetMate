@@ -10,6 +10,12 @@ export default async function HomePage() {
   // 2. Fetch Projects and Posts in parallel for speed
   const [projects] = await Promise.all([
     db.project.findMany({
+      where: {
+        OR: [
+          { authorId: session?.user?.id }, // Moje prywatne projekty
+          { private: false }         // Widoczne dla wszystkich
+        ]
+      },
       orderBy: { createdAt: "desc" },
       include: { author: true },
     })
@@ -41,7 +47,7 @@ export default async function HomePage() {
             </input>
               <div className="grid grid-cols-1 p-10 gap-4">
                 {projects.map((project) => (
-                    <ProjectCard key={project.id} project={project} />
+                    <ProjectCard key={project.id} project={project} currentUserId={session?.user?.id} />
                 ))}
                 {projects.length === 0 && <p className="text-gray-400 italic">No projects shared yet...</p>}
               </div>

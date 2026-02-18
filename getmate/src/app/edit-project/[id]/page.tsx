@@ -41,6 +41,18 @@ export default async function EditProjectPage({ params }: { params: { id: string
 
         <SlotsGrid project={project} />
         <SubmitButton/>
+        <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200">
+          <input 
+            type="checkbox" 
+            id="private"
+            name="private" 
+            className="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-yellow-400"
+          />
+          <label htmlFor="private" className="flex flex-col">
+            <span className="text-sm font-bold text-gray-700">Private Project</span>
+            <span className="text-[10px] text-gray-500">Only you will see this project on the main feed</span>
+          </label>
+        </div>
       </form>
       <form action={deleteProject}>
         <input type="hidden" name="projectId" value={params.id} />
