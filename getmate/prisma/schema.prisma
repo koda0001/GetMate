@@ -8,7 +8,7 @@ generator client {
 
 datasource db {
     provider = "postgresql"
-    url      = env("DATABASE_URL") //this works, let it be
+    // url property deprecated in Prisma 7, see prisma.config.ts for connection
 }
 
 model Post {
@@ -72,15 +72,17 @@ model VerificationToken {
 }
 
 model Project {
-  id          String   @id @default(cuid())
-  title       String
-  description String
-  slots       Int      @default(1)
-  subscribers String[]
-  private     Boolean  @default(false)
-  github      String?
-  link        String?
-  createdAt   DateTime @default(now())
-  authorId    String
-  author      User     @relation(fields: [authorId], references: [id])
+    id              String   @id @default(cuid())
+    title           String
+    description     String
+    slots           Int      @default(1)
+    subscribers     String[]
+    roleDefinitions String[] // roles per slot, e.g., ["Programmer", "Designer"]
+    private         Boolean  @default(false)
+    github          String?
+    link            String?
+    createdAt       DateTime @default(now())
+    authorId        String
+    author          User     @relation(fields: [authorId], references: [id])
+    techStack      String[] // <--- Add this line
 }

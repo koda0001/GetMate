@@ -2,76 +2,85 @@ import { auth } from "@/server/auth";
 import { db } from "@/server/db";
 import Link from "next/link";
 import { ProjectCard } from "./components/ProjectCard";
+import { ActivityFeed } from "./components/ActivityFeed";
+import { FilterToolbar } from "./components/FilterToolbar";
+
 
 export default async function HomePage() {
   // 1. Get the user session
   const session = await auth();
 
-  // 2. Fetch Projects and Posts in parallel for speed
-  const [projects] = await Promise.all([
-    db.project.findMany({
-      where: {
-        OR: [
-          { authorId: session?.user?.id }, // Moje prywatne projekty
-          { private: false }         // Widoczne dla wszystkich
-        ]
-      },
-      orderBy: { createdAt: "desc" },
-      include: { author: true },
-    })
-  ]);
-  
+  // 2. Fetch Projects (private: false OR my own)
+  const projects = await db.project.findMany({
+    where: {
+      OR: [
+        { private: false },
+        { authorId: session?.user?.id }
+      ]
+    },
+    orderBy: { createdAt: "desc" },
+    include: { author: true },
+  });
+
+  // Fetch all user IDs from all projects' subscribers
+  const userIds = Array.from(
+    new Set(
+      projects.flatMap((p: any) => p.subscribers.filter((id: string) => id && id.trim() !== ""))
+    )
+  );
+
+  // Fetch user data for all IDs
+  const users = userIds.length
+    ? await db.user.findMany({
+        where: { id: { in: userIds } },
+        select: { id: true, name: true, image: true }
+      })
+    : [];
+
+  // Map userId to user object
+  const userMap = Object.fromEntries(users.map(u => [u.id, u]));
+
+  // Attach subscriberUsers to each project for ProjectCard
+  const projectsWithUsers = projects.map((project: any) => ({
+    ...project,
+    subscriberUsers: project.subscribers.map((id: string) => userMap[id] || null)
+  }));
+
+  // Get search params from URL
+  const params = new URLSearchParams(typeof window !== "undefined" ? window.location.search : "");
+  const q = params.get("q")?.toLowerCase() || "";
+  const role = params.get("role");
+  const techStack = params.getAll("techStack");
+  const onlyFree = params.get("free") === "1";
+
+  // Filtering will be handled client-side in FilterToolbar and ProjectCard.
+  // The server component just passes all projectsWithUsers to the client.
+
   return (
-    <main className="min-h-screen bg-gray-50 p-8">
-      <div className="max-w-6xl mx-auto">
-        <header className="flex justify-between items-center mb-12">
-          <h1 className="text-4xl font-black text-gray-900 tracking-tighter">GETMATE</h1>
-          {session ? (
-            <div className="flex items-center gap-4 bg-white p-2 rounded-full shadow-sm pr-4">
-              <img src={session.user.image!} className="w-10 h-10 rounded-full" alt="profile" />
-              <span className="font-semibold">{session.user.name}</span>
-            </div>
-          ) : (
-            <Link href="/api/auth/signin" className="bg-yellow-100 text-white px-6 py-2 rounded-lg font-bold">
-              Sign In
+    <main>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        {/* Main Feed */}
+        <div className="md:col-span-3">
+          <FilterToolbar />
+          <div className="flex justify-end mb-8">
+            <Link
+              href="/new_project"
+              className="bg-[#E1D9BC] border-2 border-[#30364F] rounded-sm shadow-[4px_4px_0_#30364F] font-bold px-6 py-2 text-[#30364F] active:translate-y-1 active:shadow-none font-mono"
+            >
+              + New Project
             </Link>
-          )}
-        </header>
-
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-10">
-          {/* Projects Column */}
-          <section className="lg:col-span-2 space-y-6 border-4">
-            <input className="border-2 border-blue-400 md:w-auto"
-            placeholder="Fun project">
-            
-            </input>
-              <div className="grid grid-cols-1 p-10 gap-4">
-                {projects.map((project) => (
-                    <ProjectCard key={project.id} project={project} currentUserId={session?.user?.id} />
-                ))}
-                {projects.length === 0 && <p className="text-gray-400 italic">No projects shared yet...</p>}
-              </div>
-          </section>
-
-
-
-          {/* Setting Column */}
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-right">MENU</h2> 
-            <div className="grid grid-cols-1 p-10 gap-4 text-right">
-              <Link
-                href="/new_project"
-                className="w-full bg-blue-600 text-white py-2 pr-2 rounded-lg font-bold active:bg-blue-700 active:scale-95">
-                New Project
-              </Link>
-              <Link
-                href="/"
-                className="w-full bg-blue-600 text-white py-2 pr-2 rounded-lg font-bold active:bg-blue-700 active:scale-95">
-                Settings
-              </Link>
-            </div>
           </div>
+          <section className="space-y-8">
+            {projectsWithUsers.map((project: any) => (
+              <ProjectCard key={project.id} project={project} currentUserId={session?.user?.id} />
+            ))}
+            {projectsWithUsers.length === 0 && <p className="text-[#30364F] italic">No projects found...</p>}
+          </section>
         </div>
+        {/* Sidebar */}
+        <aside className="md:col-span-1">
+          <ActivityFeed projects={projectsWithUsers} />
+        </aside>
       </div>
     </main>
   );

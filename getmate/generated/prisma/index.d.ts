@@ -6883,11 +6883,13 @@ export namespace Prisma {
     description: number
     slots: number
     subscribers: number
+    roleDefinitions: number
     private: number
     github: number
     link: number
     createdAt: number
     authorId: number
+    techStack: number
     _all: number
   }
 
@@ -6930,11 +6932,13 @@ export namespace Prisma {
     description?: true
     slots?: true
     subscribers?: true
+    roleDefinitions?: true
     private?: true
     github?: true
     link?: true
     createdAt?: true
     authorId?: true
+    techStack?: true
     _all?: true
   }
 
@@ -7030,11 +7034,13 @@ export namespace Prisma {
     description: string
     slots: number
     subscribers: string[]
+    roleDefinitions: string[]
     private: boolean
     github: string | null
     link: string | null
     createdAt: Date
     authorId: string
+    techStack: string[]
     _count: ProjectCountAggregateOutputType | null
     _avg: ProjectAvgAggregateOutputType | null
     _sum: ProjectSumAggregateOutputType | null
@@ -7062,11 +7068,13 @@ export namespace Prisma {
     description?: boolean
     slots?: boolean
     subscribers?: boolean
+    roleDefinitions?: boolean
     private?: boolean
     github?: boolean
     link?: boolean
     createdAt?: boolean
     authorId?: boolean
+    techStack?: boolean
     author?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["project"]>
 
@@ -7076,11 +7084,13 @@ export namespace Prisma {
     description?: boolean
     slots?: boolean
     subscribers?: boolean
+    roleDefinitions?: boolean
     private?: boolean
     github?: boolean
     link?: boolean
     createdAt?: boolean
     authorId?: boolean
+    techStack?: boolean
     author?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["project"]>
 
@@ -7090,11 +7100,13 @@ export namespace Prisma {
     description?: boolean
     slots?: boolean
     subscribers?: boolean
+    roleDefinitions?: boolean
     private?: boolean
     github?: boolean
     link?: boolean
     createdAt?: boolean
     authorId?: boolean
+    techStack?: boolean
     author?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["project"]>
 
@@ -7104,14 +7116,16 @@ export namespace Prisma {
     description?: boolean
     slots?: boolean
     subscribers?: boolean
+    roleDefinitions?: boolean
     private?: boolean
     github?: boolean
     link?: boolean
     createdAt?: boolean
     authorId?: boolean
+    techStack?: boolean
   }
 
-  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "slots" | "subscribers" | "private" | "github" | "link" | "createdAt" | "authorId", ExtArgs["result"]["project"]>
+  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "slots" | "subscribers" | "roleDefinitions" | "private" | "github" | "link" | "createdAt" | "authorId" | "techStack", ExtArgs["result"]["project"]>
   export type ProjectInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     author?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -7133,11 +7147,13 @@ export namespace Prisma {
       description: string
       slots: number
       subscribers: string[]
+      roleDefinitions: string[]
       private: boolean
       github: string | null
       link: string | null
       createdAt: Date
       authorId: string
+      techStack: string[]
     }, ExtArgs["result"]["project"]>
     composites: {}
   }
@@ -7567,11 +7583,13 @@ export namespace Prisma {
     readonly description: FieldRef<"Project", 'String'>
     readonly slots: FieldRef<"Project", 'Int'>
     readonly subscribers: FieldRef<"Project", 'String[]'>
+    readonly roleDefinitions: FieldRef<"Project", 'String[]'>
     readonly private: FieldRef<"Project", 'Boolean'>
     readonly github: FieldRef<"Project", 'String'>
     readonly link: FieldRef<"Project", 'String'>
     readonly createdAt: FieldRef<"Project", 'DateTime'>
     readonly authorId: FieldRef<"Project", 'String'>
+    readonly techStack: FieldRef<"Project", 'String[]'>
   }
     
 
@@ -8066,11 +8084,13 @@ export namespace Prisma {
     description: 'description',
     slots: 'slots',
     subscribers: 'subscribers',
+    roleDefinitions: 'roleDefinitions',
     private: 'private',
     github: 'github',
     link: 'link',
     createdAt: 'createdAt',
-    authorId: 'authorId'
+    authorId: 'authorId',
+    techStack: 'techStack'
   };
 
   export type ProjectScalarFieldEnum = (typeof ProjectScalarFieldEnum)[keyof typeof ProjectScalarFieldEnum]
@@ -8492,11 +8512,13 @@ export namespace Prisma {
     description?: StringFilter<"Project"> | string
     slots?: IntFilter<"Project"> | number
     subscribers?: StringNullableListFilter<"Project">
+    roleDefinitions?: StringNullableListFilter<"Project">
     private?: BoolFilter<"Project"> | boolean
     github?: StringNullableFilter<"Project"> | string | null
     link?: StringNullableFilter<"Project"> | string | null
     createdAt?: DateTimeFilter<"Project"> | Date | string
     authorId?: StringFilter<"Project"> | string
+    techStack?: StringNullableListFilter<"Project">
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
@@ -8506,11 +8528,13 @@ export namespace Prisma {
     description?: SortOrder
     slots?: SortOrder
     subscribers?: SortOrder
+    roleDefinitions?: SortOrder
     private?: SortOrder
     github?: SortOrderInput | SortOrder
     link?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     authorId?: SortOrder
+    techStack?: SortOrder
     author?: UserOrderByWithRelationInput
   }
 
@@ -8523,11 +8547,13 @@ export namespace Prisma {
     description?: StringFilter<"Project"> | string
     slots?: IntFilter<"Project"> | number
     subscribers?: StringNullableListFilter<"Project">
+    roleDefinitions?: StringNullableListFilter<"Project">
     private?: BoolFilter<"Project"> | boolean
     github?: StringNullableFilter<"Project"> | string | null
     link?: StringNullableFilter<"Project"> | string | null
     createdAt?: DateTimeFilter<"Project"> | Date | string
     authorId?: StringFilter<"Project"> | string
+    techStack?: StringNullableListFilter<"Project">
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
@@ -8537,11 +8563,13 @@ export namespace Prisma {
     description?: SortOrder
     slots?: SortOrder
     subscribers?: SortOrder
+    roleDefinitions?: SortOrder
     private?: SortOrder
     github?: SortOrderInput | SortOrder
     link?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     authorId?: SortOrder
+    techStack?: SortOrder
     _count?: ProjectCountOrderByAggregateInput
     _avg?: ProjectAvgOrderByAggregateInput
     _max?: ProjectMaxOrderByAggregateInput
@@ -8558,11 +8586,13 @@ export namespace Prisma {
     description?: StringWithAggregatesFilter<"Project"> | string
     slots?: IntWithAggregatesFilter<"Project"> | number
     subscribers?: StringNullableListFilter<"Project">
+    roleDefinitions?: StringNullableListFilter<"Project">
     private?: BoolWithAggregatesFilter<"Project"> | boolean
     github?: StringNullableWithAggregatesFilter<"Project"> | string | null
     link?: StringNullableWithAggregatesFilter<"Project"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Project"> | Date | string
     authorId?: StringWithAggregatesFilter<"Project"> | string
+    techStack?: StringNullableListFilter<"Project">
   }
 
   export type PostCreateInput = {
@@ -8896,10 +8926,12 @@ export namespace Prisma {
     description: string
     slots?: number
     subscribers?: ProjectCreatesubscribersInput | string[]
+    roleDefinitions?: ProjectCreateroleDefinitionsInput | string[]
     private?: boolean
     github?: string | null
     link?: string | null
     createdAt?: Date | string
+    techStack?: ProjectCreatetechStackInput | string[]
     author: UserCreateNestedOneWithoutProjectsInput
   }
 
@@ -8909,11 +8941,13 @@ export namespace Prisma {
     description: string
     slots?: number
     subscribers?: ProjectCreatesubscribersInput | string[]
+    roleDefinitions?: ProjectCreateroleDefinitionsInput | string[]
     private?: boolean
     github?: string | null
     link?: string | null
     createdAt?: Date | string
     authorId: string
+    techStack?: ProjectCreatetechStackInput | string[]
   }
 
   export type ProjectUpdateInput = {
@@ -8922,10 +8956,12 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     slots?: IntFieldUpdateOperationsInput | number
     subscribers?: ProjectUpdatesubscribersInput | string[]
+    roleDefinitions?: ProjectUpdateroleDefinitionsInput | string[]
     private?: BoolFieldUpdateOperationsInput | boolean
     github?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    techStack?: ProjectUpdatetechStackInput | string[]
     author?: UserUpdateOneRequiredWithoutProjectsNestedInput
   }
 
@@ -8935,11 +8971,13 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     slots?: IntFieldUpdateOperationsInput | number
     subscribers?: ProjectUpdatesubscribersInput | string[]
+    roleDefinitions?: ProjectUpdateroleDefinitionsInput | string[]
     private?: BoolFieldUpdateOperationsInput | boolean
     github?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     authorId?: StringFieldUpdateOperationsInput | string
+    techStack?: ProjectUpdatetechStackInput | string[]
   }
 
   export type ProjectCreateManyInput = {
@@ -8948,11 +8986,13 @@ export namespace Prisma {
     description: string
     slots?: number
     subscribers?: ProjectCreatesubscribersInput | string[]
+    roleDefinitions?: ProjectCreateroleDefinitionsInput | string[]
     private?: boolean
     github?: string | null
     link?: string | null
     createdAt?: Date | string
     authorId: string
+    techStack?: ProjectCreatetechStackInput | string[]
   }
 
   export type ProjectUpdateManyMutationInput = {
@@ -8961,10 +9001,12 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     slots?: IntFieldUpdateOperationsInput | number
     subscribers?: ProjectUpdatesubscribersInput | string[]
+    roleDefinitions?: ProjectUpdateroleDefinitionsInput | string[]
     private?: BoolFieldUpdateOperationsInput | boolean
     github?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    techStack?: ProjectUpdatetechStackInput | string[]
   }
 
   export type ProjectUncheckedUpdateManyInput = {
@@ -8973,11 +9015,13 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     slots?: IntFieldUpdateOperationsInput | number
     subscribers?: ProjectUpdatesubscribersInput | string[]
+    roleDefinitions?: ProjectUpdateroleDefinitionsInput | string[]
     private?: BoolFieldUpdateOperationsInput | boolean
     github?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     authorId?: StringFieldUpdateOperationsInput | string
+    techStack?: ProjectUpdatetechStackInput | string[]
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -9382,11 +9426,13 @@ export namespace Prisma {
     description?: SortOrder
     slots?: SortOrder
     subscribers?: SortOrder
+    roleDefinitions?: SortOrder
     private?: SortOrder
     github?: SortOrder
     link?: SortOrder
     createdAt?: SortOrder
     authorId?: SortOrder
+    techStack?: SortOrder
   }
 
   export type ProjectAvgOrderByAggregateInput = {
@@ -9675,6 +9721,14 @@ export namespace Prisma {
     set: string[]
   }
 
+  export type ProjectCreateroleDefinitionsInput = {
+    set: string[]
+  }
+
+  export type ProjectCreatetechStackInput = {
+    set: string[]
+  }
+
   export type UserCreateNestedOneWithoutProjectsInput = {
     create?: XOR<UserCreateWithoutProjectsInput, UserUncheckedCreateWithoutProjectsInput>
     connectOrCreate?: UserCreateOrConnectWithoutProjectsInput
@@ -9686,8 +9740,18 @@ export namespace Prisma {
     push?: string | string[]
   }
 
+  export type ProjectUpdateroleDefinitionsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
   export type BoolFieldUpdateOperationsInput = {
     set?: boolean
+  }
+
+  export type ProjectUpdatetechStackInput = {
+    set?: string[]
+    push?: string | string[]
   }
 
   export type UserUpdateOneRequiredWithoutProjectsNestedInput = {
@@ -10170,10 +10234,12 @@ export namespace Prisma {
     description: string
     slots?: number
     subscribers?: ProjectCreatesubscribersInput | string[]
+    roleDefinitions?: ProjectCreateroleDefinitionsInput | string[]
     private?: boolean
     github?: string | null
     link?: string | null
     createdAt?: Date | string
+    techStack?: ProjectCreatetechStackInput | string[]
   }
 
   export type ProjectUncheckedCreateWithoutAuthorInput = {
@@ -10182,10 +10248,12 @@ export namespace Prisma {
     description: string
     slots?: number
     subscribers?: ProjectCreatesubscribersInput | string[]
+    roleDefinitions?: ProjectCreateroleDefinitionsInput | string[]
     private?: boolean
     github?: string | null
     link?: string | null
     createdAt?: Date | string
+    techStack?: ProjectCreatetechStackInput | string[]
   }
 
   export type ProjectCreateOrConnectWithoutAuthorInput = {
@@ -10311,11 +10379,13 @@ export namespace Prisma {
     description?: StringFilter<"Project"> | string
     slots?: IntFilter<"Project"> | number
     subscribers?: StringNullableListFilter<"Project">
+    roleDefinitions?: StringNullableListFilter<"Project">
     private?: BoolFilter<"Project"> | boolean
     github?: StringNullableFilter<"Project"> | string | null
     link?: StringNullableFilter<"Project"> | string | null
     createdAt?: DateTimeFilter<"Project"> | Date | string
     authorId?: StringFilter<"Project"> | string
+    techStack?: StringNullableListFilter<"Project">
   }
 
   export type UserCreateWithoutProjectsInput = {
@@ -10412,10 +10482,12 @@ export namespace Prisma {
     description: string
     slots?: number
     subscribers?: ProjectCreatesubscribersInput | string[]
+    roleDefinitions?: ProjectCreateroleDefinitionsInput | string[]
     private?: boolean
     github?: string | null
     link?: string | null
     createdAt?: Date | string
+    techStack?: ProjectCreatetechStackInput | string[]
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -10507,10 +10579,12 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     slots?: IntFieldUpdateOperationsInput | number
     subscribers?: ProjectUpdatesubscribersInput | string[]
+    roleDefinitions?: ProjectUpdateroleDefinitionsInput | string[]
     private?: BoolFieldUpdateOperationsInput | boolean
     github?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    techStack?: ProjectUpdatetechStackInput | string[]
   }
 
   export type ProjectUncheckedUpdateWithoutAuthorInput = {
@@ -10519,10 +10593,12 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     slots?: IntFieldUpdateOperationsInput | number
     subscribers?: ProjectUpdatesubscribersInput | string[]
+    roleDefinitions?: ProjectUpdateroleDefinitionsInput | string[]
     private?: BoolFieldUpdateOperationsInput | boolean
     github?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    techStack?: ProjectUpdatetechStackInput | string[]
   }
 
   export type ProjectUncheckedUpdateManyWithoutAuthorInput = {
@@ -10531,10 +10607,12 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     slots?: IntFieldUpdateOperationsInput | number
     subscribers?: ProjectUpdatesubscribersInput | string[]
+    roleDefinitions?: ProjectUpdateroleDefinitionsInput | string[]
     private?: BoolFieldUpdateOperationsInput | boolean
     github?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    techStack?: ProjectUpdatetechStackInput | string[]
   }
 
 

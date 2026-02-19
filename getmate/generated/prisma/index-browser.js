@@ -172,11 +172,13 @@ exports.Prisma.ProjectScalarFieldEnum = {
   description: 'description',
   slots: 'slots',
   subscribers: 'subscribers',
+  roleDefinitions: 'roleDefinitions',
   private: 'private',
   github: 'github',
   link: 'link',
   createdAt: 'createdAt',
-  authorId: 'authorId'
+  authorId: 'authorId',
+  techStack: 'techStack'
 };
 
 exports.Prisma.SortOrder = {

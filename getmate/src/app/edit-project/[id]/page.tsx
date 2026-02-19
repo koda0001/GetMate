@@ -5,6 +5,7 @@ import { SubmitButton } from "@/app/components/SubmitButton";
 import { DeleteButton } from "@/app/components/DeleteButton";
 import { SlotsGrid } from "@/app/components/SlotsGrid";
 import Link from "next/link";
+import { TechStackSelector } from "@/app/components/TechStackSelector";
 
 export default async function EditProjectPage({ params }: { params: { id: string } }) {
   // Fetch project data by ID from URL
@@ -39,6 +40,7 @@ export default async function EditProjectPage({ params }: { params: { id: string
           className="w-full p-2 border rounded h-32"
         />
 
+        <TechStackSelector initial={project.techStack || []} />
         <SlotsGrid project={project} />
         <SubmitButton/>
         <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200">

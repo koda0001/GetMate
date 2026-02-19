@@ -17,7 +17,8 @@ export async function createProject(formData: FormData) {
   const github = formData.get("github") as string;
   const slots = Number(formData.get("slots"));
   const isPrivate = formData.get("private") === "on";
-
+  const roleDefinitions = formData.getAll("slot_role") as string[];
+  const techStack = formData.getAll("techStack") as string[]; // <-- NEW
 
   // 3. DATABASE EXECUTION (The Chef)
   await db.project.create({
@@ -27,7 +28,9 @@ export async function createProject(formData: FormData) {
       github,
       slots,
       subscribers: Array(slots).fill(""),
+      roleDefinitions: roleDefinitions.length === slots ? roleDefinitions : Array(slots).fill("Programmer"),
       private: isPrivate,
+      techStack, // <-- NEW
       authorId: session.user.id,
     },
   });
@@ -50,8 +53,9 @@ export async function updateProject(formData: FormData) {
   const github = formData.get("github") as string;
   const slots = Number(formData.get("slots"));
   const subscribers = formData.getAll("slot_description") as string[];
+  const roleDefinitions = formData.getAll("slot_role") as string[];
   const isPrivate = formData.get("private") === "on";
-
+  const techStack = formData.getAll("techStack") as string[]; // <-- NEW
   
   
   // 3. AUTHENTICATION (The Bouncer)
@@ -74,8 +78,10 @@ export async function updateProject(formData: FormData) {
       github: github,
       slots: slots,
       subscribers: subscribers,
+      roleDefinitions: roleDefinitions.length === slots ? roleDefinitions : Array(slots).fill("Programmer"),
       authorId: session.user.id,
       private: isPrivate,
+      techStack, // <-- NEW
     },
   });
 
@@ -113,7 +119,7 @@ export async function deleteProject(formData: FormData) {
   redirect("/");
 }
 
-export async function joinProject(projectId: string) {
+export async function joinProject(projectId: string, slotIndex: number) {
   const session = await auth();
   if (!session) throw new Error("Log in first!");
 
@@ -123,19 +129,15 @@ export async function joinProject(projectId: string) {
 
   if (!project) throw new Error("Project not found");
 
-  const subscribers = [...project.subscribers];
-  const firstEmptyIndex = subscribers.findIndex(s => s.trim() === "");
-
-  if (firstEmptyIndex === -1) {
-    throw new Error("No empty slots available!");
-  }
-
-  if (subscribers.includes(session.user.id)) {
+  if (project.subscribers.includes(session.user.id)) {
     throw new Error("You already joined!");
   }
+  if (project.subscribers[slotIndex] && project.subscribers[slotIndex].trim() !== "") {
+    throw new Error("Slot already taken!");
+  }
 
-  // Zastępujemy pusty string identyfikatorem użytkownika
-  subscribers[firstEmptyIndex] = session.user.id;
+  const subscribers = [...project.subscribers];
+  subscribers[slotIndex] = session.user.id;
 
   await db.project.update({
     where: { id: projectId },

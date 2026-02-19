@@ -1,73 +1,89 @@
 'use client';
+import { UserParticipantStack } from "./UserParticipantStack";
 import { joinProject } from "../actions";
+import { ProjectStatusBadge } from "./ProjectStatusBadge";
 import Link from "next/link";
+import React from "react";
+
+import { useRouter } from "next/navigation";
 
 export function ProjectCard({ project, currentUserId }: { project: any, currentUserId?: string }) {
-  const occupied = project.subscribers?.filter((id: string) => id.trim() !== "").length || 0;
-  const total = project.slots || 0;
-  const free = total - occupied;
-  const isFull = free <= 0;
-  const isSubscribed = project.subscribers.includes(currentUserId);
-
-  const handleJoin = async (e: React.MouseEvent) => {
-    e.preventDefault(); // ZATRZYMUJE przekierowanie do edycji!
+  const router = useRouter();
+  const handleJoin = async (slotIndex: number) => {
     try {
-      await joinProject(project.id);
+      await joinProject(project.id, slotIndex);
       alert("Dołączono do projektu!");
+      router.refresh();
     } catch (err: any) {
       alert(err.message);
     }
   };
 
   return (
-    <div className="relative">
-      <Link href={`/edit-project/${project.id}`}>
-        <div className="bg-yellow-100 grid grid-cols-2 p-6 rounded-2xl border-4 border-blue-300 hover:border-blue-500 transition-all shadow-sm">
-          
-          {/* Lewa strona: Info o projekcie */}
-          <div className="flex flex-col border-r border-blue-200 pr-4">
-            <div className="flex items-center gap-2">
-              <h3 className="text-xl font-bold mb-2 truncate">{project.title}</h3>
-              {project.private && (
-                <span className="bg-gray-200 text-gray-600 p-1 rounded-md text-[10px] mb-2">
-                  🔒 Private
-                </span>
+    <div
+      className="card grid grid-cols-2 gap-6 items-start cursor-pointer hover:bg-[#e7e7c7] transition-colors"
+      onClick={() => router.push(`/edit-project/${project.id}`)}
+      tabIndex={0}
+      role="button"
+      onKeyDown={e => { if (e.key === "Enter" || e.key === " ") router.push(`/edit-project/${project.id}`); }}
+    >
+      {/* Status Badge */}
+      {/* Left: Title, Description, Participants */}
+      <div className="flex flex-col gap-4">
+        <div className="flex items-center gap-2">
+          <h3 className="text-2xl font-extrabold font-mono">{project.title}</h3>
+          {project.private && (
+            <span className="bg-[#30364F] text-[#E1D9BC] px-2 py-1 rounded-sm font-mono text-xs">🔒 PRIVATE</span>
+          )}
+        </div>
+        <p className="font-mono text-base">{project.description}</p>
+        <UserParticipantStack
+          users={project.subscriberUsers}
+          roles={project.roleDefinitions}
+          maxSlots={project.slots}
+        />
+      </div>
+      {/* Right: Slots & Join */}
+      <div className="flex flex-col gap-2" onClick={e => e.stopPropagation()}>
+        {project.roleDefinitions?.map((role: string, i: number) => {
+          const userId = project.subscribers[i];
+          const user = project.subscriberUsers?.[i];
+          const isSubscribed = project.subscribers.includes(currentUserId);
+          return (
+            <div key={i} className="flex items-center gap-2 border-2 border-[#30364F] rounded-sm bg-[#F0F0DB] px-2 py-1 font-mono">
+              <span className="font-bold text-[#30364F]">{role}</span>
+              {userId && user ? (
+                <div className="flex items-center gap-2">
+                  <img src={user.image} alt={user.name} className="w-6 h-6 rounded-sm border-2 border-[#30364F]" />
+                  <span className="text-sm">{user.name}</span>
+                </div>
+              ) : (
+                <button
+                  className="ml-auto px-3 py-1 bg-[#E1D9BC] border-2 border-[#30364F] rounded-sm shadow-[4px_4px_0_#30364F] font-bold active:translate-y-1 active:shadow-none"
+                  disabled={!!userId || isSubscribed}
+                  onClick={e => { e.stopPropagation(); handleJoin(i); }}
+                >
+                  Join as {role}
+                </button>
               )}
             </div>
-            <p className="text-gray-600 text-sm line-clamp-2 mb-4">
-              {project.description}
-            </p>
-            <div className="mt-auto flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              <span className="text-[10px] font-bold uppercase text-gray-400">Active</span>
-            </div>
-          </div>
-
-          {/* Prawa strona: Sloty i Join */}
-          <div className="pl-4 flex flex-col justify-center text-center">
-            <span className="text-[10px] font-black uppercase text-blue-500 tracking-widest">
-              Free Spots
-            </span>
-            
-            <div className="my-2">
-              <span className={`text-4xl font-black ${isFull ? 'text-red-500' : 'text-gray-900'}`}>
-                {free}
-              </span>
-              <span className="text-xl font-bold text-gray-400">/{total}</span>
-            </div>
-
-            <button 
-              onClick={handleJoin}
-              disabled={isFull || isSubscribed}
-              className={`w-full py-2 rounded-xl font-bold ... ${
-                isFull || isSubscribed ? 'bg-gray-200' : 'bg-blue-600 hover:bg-blue-700'
-              }`}
+          );
+        })}
+      </div>
+      {/* Tech Stack Tags */}
+      {project.techStack && project.techStack.length > 0 && (
+        <div className="col-span-2 flex flex-wrap gap-2 mt-4">
+          {project.techStack.map((tag: string) => (
+            <span
+              key={tag}
+              className="inline-flex items-center px-2 py-1 bg-[#E1D9BC] border-2 border-[#30364F] rounded-sm font-mono text-xs font-bold shadow-[2px_2px_0_#30364F]"
             >
-              {isSubscribed ? "ALREADY JOINED" : isFull ? "CLOSED" : "JOIN NOW"}
-            </button>
-          </div>
+              {tag}
+            </span>
+          ))}
         </div>
-      </Link>
+      )}
+      <ProjectStatusBadge project={project} />
     </div>
   );
 }
