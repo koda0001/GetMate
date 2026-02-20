@@ -4,11 +4,14 @@ import { joinProject } from "../actions";
 import { ProjectStatusBadge } from "./ProjectStatusBadge";
 import Link from "next/link";
 import React from "react";
-
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export function ProjectCard({ project, currentUserId }: { project: any, currentUserId?: string }) {
   const router = useRouter();
+  const { data: session } = useSession();
+  const isLoggedIn = !!session?.user;
+  const isAuthor = isLoggedIn && session.user.id === project.authorId;
   const handleJoin = async (slotIndex: number) => {
     try {
       await joinProject(project.id, slotIndex);
@@ -43,14 +46,57 @@ export function ProjectCard({ project, currentUserId }: { project: any, currentU
           maxSlots={project.slots}
         />
       </div>
-      {/* Right: Slots & Join */}
+      {/* Right: Slots & Join/Edit/Sign In */}
       <div className="flex flex-col gap-2" onClick={e => e.stopPropagation()}>
         {project.roleDefinitions?.map((role: string, i: number) => {
           const userId = project.subscribers[i];
           const user = project.subscriberUsers?.[i];
-          const isSubscribed = project.subscribers.includes(currentUserId);
+          const isSubscribed = isLoggedIn && project.subscribers.includes(session.user.id);
+          // Author: show Edit
+          if (isAuthor) {
+            return (
+              <div key={i} className="flex items-center gap-2 border-2 border-[#30364F] rounded-sm bg-[#F0F0DB] px-2 py-1 font-mono">
+                <span className="font-bold text-[#30364F]">{role}</span>
+                {userId && user ? (
+                  <div className="flex items-center gap-2">
+                    <img src={user.image} alt={user.name} className="w-6 h-6 rounded-sm border-2 border-[#30364F]" />
+                    <span className="text-sm">{user.name}</span>
+                  </div>
+                ) : (
+                  <button
+                    className="ml-auto px-3 py-1 bg-[#E1D9BC] border-2 border-[#30364F] rounded-sm shadow-[4px_4px_0_#30364F] font-bold active:translate-y-1 active:shadow-none"
+                  >
+                    Edit
+                  </button>
+                )}
+              </div>
+            );
+          }
+          // Logged in, not author: show Join
+          if (isLoggedIn) {
+            return (
+              <div key={i} className="flex items-center gap-2 border-2 border-[#30364F] rounded-sm bg-[#F0F0DB] px-2 py-1 font-mono">
+                <span className="font-bold text-[#30364F]">{role}</span>
+                {userId && user ? (
+                  <div className="flex items-center gap-2">
+                    <img src={user.image} alt={user.name} className="w-6 h-6 rounded-sm border-2 border-[#30364F]" />
+                    <span className="text-sm">{user.name}</span>
+                  </div>
+                ) : (
+                  <button
+                    className="ml-auto px-3 py-1 bg-[#E1D9BC] border-2 border-[#30364F] rounded-sm shadow-[4px_4px_0_#30364F] font-bold active:translate-y-1 active:shadow-none"
+                    disabled={!!userId || isSubscribed}
+                    onClick={e => { e.stopPropagation(); handleJoin(i); }}
+                  >
+                    Join as {role}
+                  </button>
+                )}
+              </div>
+            );
+          }
+          // Anonymous: show disabled and tooltip
           return (
-            <div key={i} className="flex items-center gap-2 border-2 border-[#30364F] rounded-sm bg-[#F0F0DB] px-2 py-1 font-mono">
+            <div key={i} className="flex items-center gap-2 border-2 border-[#30364F] rounded-sm bg-[#F0F0DB] px-2 py-1 font-mono relative group">
               <span className="font-bold text-[#30364F]">{role}</span>
               {userId && user ? (
                 <div className="flex items-center gap-2">
@@ -59,13 +105,17 @@ export function ProjectCard({ project, currentUserId }: { project: any, currentU
                 </div>
               ) : (
                 <button
-                  className="ml-auto px-3 py-1 bg-[#E1D9BC] border-2 border-[#30364F] rounded-sm shadow-[4px_4px_0_#30364F] font-bold active:translate-y-1 active:shadow-none"
-                  disabled={!!userId || isSubscribed}
-                  onClick={e => { e.stopPropagation(); handleJoin(i); }}
+                  className="ml-auto px-3 py-1 bg-[#E1D9BC] border-2 border-[#30364F] rounded-sm shadow-[4px_4px_0_#30364F] font-bold opacity-50 cursor-not-allowed"
+                  disabled
                 >
                   Join as {role}
                 </button>
               )}
+              <div className="absolute left-1/2 -translate-x-1/2 top-12 z-20 hidden group-hover:block">
+                <div className="bg-[#30364F] text-[#E1D9BC] px-3 py-1 rounded-sm border-2 border-[#30364F] font-mono text-xs shadow-lg">
+                  Sign in to participate
+                </div>
+              </div>
             </div>
           );
         })}

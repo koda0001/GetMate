@@ -1,4 +1,5 @@
 import { db } from "@/server/db";
+import { auth } from "@/server/auth";
 import { redirect } from "next/navigation";
 import { deleteProject, updateProject } from "../../actions";
 import { SubmitButton } from "@/app/components/SubmitButton";
@@ -8,60 +9,120 @@ import Link from "next/link";
 import { TechStackSelector } from "@/app/components/TechStackSelector";
 
 export default async function EditProjectPage({ params }: { params: { id: string } }) {
-  // Fetch project data by ID from URL
+  // Pobieramy dane projektu wraz z autorem
   const project = await db.project.findUnique({
     where: { id: params.id },
+    include: { author: true },
   });
 
-  if (!project) {
-    redirect("/"); // If project doesn't exist, redirect to home
-  }
+  if (!project) redirect("/");
+
+  const session = await auth();
+  const isOwner = session?.user?.id === project.authorId;
 
   return (
     <main className="p-8 max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Edit Project: {project.title}</h1>
-        {/* Powrót */}
-        <Link href="/" className="text-sm text-gray-500 hover:underline mb-8 block">
-          ← Back to home
-        </Link>
-      <form action={updateProject} className="space-y-4">
-        {/* Pass project ID as hidden field for the action */}
-        <input type="hidden" name="projectId" value={project.id} />
+      {/* Badge Autora */}
+      <div className="mb-4">
+        <span className="inline-block px-3 py-1 font-bold text-[#30364F] bg-[#E1D9BC] border-2 border-[#30364F] rounded shadow-[4px_4px_0_#30364F]">
+          Project by {project.author?.name || "Unknown"}
+        </span>
+      </div>
 
-        <input
-          name="title"
-          defaultValue={project.title}
-          className="w-full p-2 border rounded"
-        />
+      <h1 className="text-3xl font-black mb-6 text-[#30364F]">
+        {isOwner ? "Settings: " : "View: "}
+        {project.title}
+      </h1>
 
-        <textarea
-          name="description"
-          defaultValue={project.description}
-          className="w-full p-2 border rounded h-32"
-        />
+      <Link href="/" className="text-sm text-gray-500 hover:underline mb-8 block font-mono">
+        ← Back to home
+      </Link>
 
-        <TechStackSelector initial={project.techStack || []} />
-        <SlotsGrid project={project} />
-        <SubmitButton/>
-        <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200">
-          <input 
-            type="checkbox" 
-            id="private"
-            name="private" 
-            className="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-yellow-400"
-          />
-          <label htmlFor="private" className="flex flex-col">
-            <span className="text-sm font-bold text-gray-700">Private Project</span>
-            <span className="text-[10px] text-gray-500">Only you will see this project on the main feed</span>
-          </label>
+      {isOwner ? (
+        /* WIDOK DLA WŁAŚCICIELA - TRYB EDYCJI */
+        <form action={updateProject} className="space-y-6">
+          <input type="hidden" name="projectId" value={project.id} />
+          
+          <div className="space-y-1">
+            <label className="text-xs font-bold uppercase text-[#30364F]">Project Title</label>
+            <input 
+              name="title" 
+              defaultValue={project.title} 
+              className="w-full p-3 border-2 border-[#30364F] rounded-none focus:ring-0 focus:bg-[#F0F0DB] outline-none shadow-[4px_4px_0_#30364F] transition-all" 
+            />
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs font-bold uppercase text-[#30364F]">Description</label>
+            <textarea 
+              name="description" 
+              defaultValue={project.description} 
+              className="w-full p-3 border-2 border-[#30364F] rounded-none h-40 focus:ring-0 focus:bg-[#F0F0DB] outline-none shadow-[4px_4px_0_#30364F] transition-all" 
+            />
+          </div>
+
+          <div className="space-y-2">
+             <label className="text-xs font-bold uppercase text-[#30364F]">Tech Stack</label>
+             <TechStackSelector initial={project.techStack || []} mode="edit" />
+          </div>
+          
+          <div className="space-y-2">
+             <label className="text-xs font-bold uppercase text-[#30364F]">Team Slots</label>
+             <SlotsGrid project={project} mode="edit" />
+          </div>
+          
+          <div className="flex items-center gap-3 p-4 bg-white border-2 border-[#30364F] shadow-[4px_4px_0_#30364F]">
+            <input 
+              type="checkbox" 
+              id="private" 
+              name="private" 
+              defaultChecked={project.private}
+              className="w-6 h-6 border-2 border-[#30364F] text-[#30364F] focus:ring-0 accent-[#30364F]" 
+            />
+            <label htmlFor="private" className="flex flex-col cursor-pointer">
+              <span className="text-sm font-bold text-[#30364F] uppercase">Private Project</span>
+              <span className="text-[10px] text-gray-500 font-mono">Hidden from the public main feed</span>
+            </label>
+          </div>
+
+          <div className="pt-4">
+            <SubmitButton />
+          </div>
+        </form>
+      ) : (
+        /* WIDOK DLA GOŚCIA - TRYB PODGLĄDU */
+        <div className="space-y-8">
+          <div className="w-full p-6 border-2 border-[#30364F] bg-[#E1D9BC] font-mono text-[#30364F] shadow-[8px_8px_0_#30364F]">
+            <div className="mb-4 font-bold uppercase tracking-widest border-b-2 border-[#30364F] pb-2 text-lg">
+              // PROJECT_BRIEF
+            </div>
+            <div className="whitespace-pre-wrap leading-relaxed">
+              {project.description}
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <h3 className="text-xs font-bold uppercase text-[#30364F] tracking-widest px-1">Technologies Used</h3>
+            <TechStackSelector initial={project.techStack || []} mode="view" />
+          </div>
+
+          <div className="space-y-3">
+            <h3 className="text-xs font-bold uppercase text-[#30364F] tracking-widest px-1">Current Openings</h3>
+            <SlotsGrid project={project} mode="view" />
+          </div>
         </div>
-      </form>
-      <form action={deleteProject}>
-        <input type="hidden" name="projectId" value={params.id} />
-        <div className="mt-2">
-          <DeleteButton />
-        </div>
-      </form>
+      )}
+
+      {/* Przycisk usuwania - Tylko dla Ownera */}
+      {isOwner && (
+        <form action={deleteProject} className="mt-16 pt-8 border-t-2 border-dashed border-[#30364F]/30">
+          <input type="hidden" name="projectId" value={project.id} />
+          <div className="flex flex-col gap-2">
+            <p className="text-[10px] font-mono uppercase text-red-500">Danger Zone: Permanent Action</p>
+            <DeleteButton />
+          </div>
+        </form>
+      )}
     </main>
   );
 }

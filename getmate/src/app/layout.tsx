@@ -1,7 +1,11 @@
 import "@/styles/globals.css";
 
+
 import { type Metadata } from "next";
 import { Geist } from "next/font/google";
+
+import SidebarWithLogin from "./components/SidebarWithLogin";
+import { SessionProvider } from "next-auth/react";
 
 export const metadata: Metadata = {
   title: "GetMate",
@@ -14,20 +18,16 @@ const geist = Geist({
   variable: "--font-geist-sans",
 });
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${geist.variable}`}>
       <body>
-        <div className="min-h-screen flex bg-[#F0F0DB] text-[#30364F] font-mono">
-          <aside className="w-80 p-8 border-r-4 border-[#30364F] bg-[#E1D9BC] flex flex-col gap-8">
-            {/* Sidebar: User info, stats, nav */}
-            <div className="font-bold text-2xl tracking-tight">GETMATE</div>
-            {/* ...add user info, stats, nav here... */}
-          </aside>
-          <main className="flex-1 p-8">{children}</main>
-        </div>
+        <SessionProvider>
+          <div className="min-h-screen flex bg-[#F0F0DB] text-[#30364F] font-mono">
+            <SidebarWithLogin />
+            <main className="flex-1 p-8">{children}</main>
+          </div>
+        </SessionProvider>
       </body>
     </html>
   );

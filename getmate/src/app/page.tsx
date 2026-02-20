@@ -57,8 +57,8 @@ export default async function HomePage() {
   // The server component just passes all projectsWithUsers to the client.
 
   return (
-    <main>
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <main className="p-8 max-w-7xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-8 w-300">
         {/* Main Feed */}
         <div className="md:col-span-3">
           <FilterToolbar />

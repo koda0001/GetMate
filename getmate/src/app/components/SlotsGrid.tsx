@@ -1,9 +1,8 @@
 'use client';
-
-
 import { useState } from "react";
+import { useSession } from "next-auth/react";
 
-export function SlotsGrid({ project }: { project: any }) {
+export function SlotsGrid({ project, mode = 'edit', onJoin }: { project: any, mode?: 'edit' | 'view', onJoin?: (slotIndex: number, role: string) => void }) {
   const ROLE_OPTIONS = [
     "Programmer",
     "Graphic Designer",
@@ -12,8 +11,11 @@ export function SlotsGrid({ project }: { project: any }) {
   const [slotsCount, setSlotsCount] = useState(project?.slots || 1);
   const [sixSlots, setSixSlots] = useState(slotsCount > 5);
   const [roleDefinitions, setRoleDefinitions] = useState<string[]>(
-    project?.roleDefinitions || Array(slotsCount).fill(ROLE_OPTIONS[0])
+    project?.roleDefinitions ?? Array(slotsCount).fill(ROLE_OPTIONS[0])
   );
+  const { data: session } = useSession();
+  const isLoggedIn = !!session?.user;
+  const isEdit = mode === 'edit';
 
   const handleSlotsChange = (value: string) => {
     const num = parseInt(value) || 1;
@@ -37,40 +39,82 @@ export function SlotsGrid({ project }: { project: any }) {
 
   return (
     <div className="space-y-4">
-      <div>
-        <label className="text-sm font-medium">Slots</label>
-        <input
-          name="slots"
-          type="number"
-          className="w-full p-2 border rounded-md focus:ring-2 focus:ring-yellow-400 outline-none"
-          min="1"
-          max="20"
-          value={slotsCount}
-          onChange={(e) => handleSlotsChange(e.target.value)}
-        />
-      </div>
-      <div className={`grid gap-4 transition-all duration-300 ${sixSlots ? 'grid-cols-2' : 'grid-cols-1'}`}>
-        {Array.from({ length: slotsCount }).map((_, i) => (
-          <div key={i} className="flex gap-2 items-center animate-in fade-in slide-in-from-left-2 duration-200">
-            <label className="text-xs font-bold text-gray-400">Slot #{i + 1}</label>
-            <input
-              name="slot_description"
-              placeholder={`Opis dla slotu ${i + 1}`}
-              defaultValue={project.subscribers?.[i] || ""}
-              className="flex-1 p-2 border rounded"
-            />
-            <select
-              name="slot_role"
-              value={roleDefinitions[i]}
-              onChange={e => handleRoleChange(i, e.target.value)}
-              className="p-2 border rounded bg-white"
-            >
-              {ROLE_OPTIONS.map(role => (
-                <option key={role} value={role}>{role}</option>
-              ))}
-            </select>
-          </div>
-        ))}
+      {isEdit ? (
+        <div>
+          <label className="text-sm font-medium">Slots</label>
+          <input
+            name="slots"
+            type="number"
+            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-yellow-400 outline-none"
+            min="1"
+            max="20"
+            value={slotsCount}
+            onChange={(e) => handleSlotsChange(e.target.value)}
+            disabled={!isLoggedIn}
+          />
+          {!isLoggedIn && (
+            <div className="mt-2 text-xs text-[#30364F] font-mono bg-[#E1D9BC] border-2 border-[#30364F] rounded-sm px-2 py-1 shadow-[2px_2px_0_#30364F]">
+              Sign in to edit slots
+            </div>
+          )}
+        </div>
+      ) : null}
+      <div className="grid gap-4 transition-all duration-300 grid-cols-1">
+        {Array.from({ length: slotsCount }).map((_, i) => {
+          const subscriber = project.subscribers?.[i];
+          const role = roleDefinitions[i] || ROLE_OPTIONS[0];
+          if (isEdit) {
+            return (
+              <div key={i} className="flex gap-2 items-center animate-in fade-in slide-in-from-left-2 duration-200">
+                <label className="text-xs font-bold text-gray-400">Slot #{i + 1}</label>
+                <input
+                  name="slot_description"
+                  placeholder={`Opis dla slotu ${i + 1}`}
+                  defaultValue={subscriber || ""}
+                  className="flex-1 p-2 border rounded"
+                  disabled={!isLoggedIn}
+                />
+                <select
+                  name="slot_role"
+                  value={role}
+                  onChange={e => handleRoleChange(i, e.target.value)}
+                  className="p-2 border rounded bg-white"
+                  disabled={!isLoggedIn}
+                >
+                  {ROLE_OPTIONS.map(roleOpt => (
+                    <option key={roleOpt} value={roleOpt}>{roleOpt}</option>
+                  ))}
+                </select>
+                {!isLoggedIn && (
+                  <div className="ml-2 text-xs text-[#30364F] font-mono bg-[#E1D9BC] border-2 border-[#30364F] rounded-sm px-2 py-1 shadow-[2px_2px_0_#30364F]">
+                    Sign in to participate
+                  </div>
+                )}
+              </div>
+            );
+          } else {
+            return (
+              <div key={i} className="flex gap-2 items-center border-2 border-[#30364F] bg-[#E1D9BC] rounded p-2 shadow-[2px_2px_0_#30364F]">
+                <span className="text-xs font-bold text-[#30364F]">Slot #{i + 1}</span>
+                <span className="text-xs font-mono px-2 py-1 bg-white rounded border-2 border-[#30364F]">{role}</span>
+                {subscriber ? (
+                  <div className="flex items-center gap-2">
+                    {/* Replace with user avatar/name if available */}
+                    <div className="w-8 h-8 rounded-full bg-gray-300 border-2 border-[#30364F]" />
+                    <span className="font-bold text-[#30364F]">{subscriber}</span>
+                  </div>
+                ) : (
+                  <button
+                    className="ml-2 px-3 py-1 font-bold text-[#30364F] bg-[#E1D9BC] border-2 border-[#30364F] rounded shadow-[2px_2px_0_#30364F] hover:bg-[#F7E9A0] transition"
+                    onClick={() => onJoin && onJoin(i, role)}
+                  >
+                    Join as {role}
+                  </button>
+                )}
+              </div>
+            );
+          }
+        })}
       </div>
     </div>
   );
