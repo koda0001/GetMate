@@ -7,8 +7,9 @@ generator client {
 }
 
 datasource db {
-    provider = "postgresql"
-    // url property deprecated in Prisma 7, see prisma.config.ts for connection
+  provider = "postgresql"
+  url      = env("DATABASE_URL") // DO NOT REMOVE THIS LINE! Required for Prisma CLI.
+  // url property deprecated in Prisma 7, see prisma.config.ts for connection
 }
 
 model Post {
@@ -55,6 +56,7 @@ model User {
     id            String    @id @default(cuid())
     name          String?
     email         String?   @unique
+      applications  Application[]
     emailVerified DateTime?
     image         String?
     accounts      Account[]
@@ -71,18 +73,57 @@ model VerificationToken {
     @@unique([identifier, token])
 }
 
+enum ProjectCategory {
+  WEB
+  MOBILE
+  GAME
+  AI
+}
+
+enum ProjectStatus {
+  HIRING
+  IN_PROGRESS
+  COMPLETED
+  CANCELED
+}
+
+enum ApplicationStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
 model Project {
-    id              String   @id @default(cuid())
-    title           String
-    description     String
-    slots           Int      @default(1)
-    subscribers     String[]
-    roleDefinitions String[] // roles per slot, e.g., ["Programmer", "Designer"]
-    private         Boolean  @default(false)
-    github          String?
-    link            String?
-    createdAt       DateTime @default(now())
-    authorId        String
-    author          User     @relation(fields: [authorId], references: [id])
-    techStack      String[] // <--- Add this line
+  id             String   @id @default(cuid())
+  title          String
+  description    String
+  slots          Int
+  subscribers    String[] // user IDs
+  roleDefinitions String[]
+  private        Boolean  @default(false)
+  github         String?
+  link           String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt @default(now())
+  author         User     @relation(fields: [authorId], references: [id])
+  authorId       String
+  techStack      String[]
+  category       ProjectCategory @default(WEB)
+  status         ProjectStatus   @default(HIRING)
+  applications   Application[]
+
+  // Removed invalid @@index([name]) - no 'name' field exists
+}
+
+model Application {
+  id         String            @id @default(cuid())
+  user       User              @relation(fields: [userId], references: [id])
+  userId     String
+  project    Project           @relation(fields: [projectId], references: [id])
+  projectId  String
+  slotIndex  Int
+  status     ApplicationStatus @default(PENDING)
+  createdAt  DateTime          @default(now())
+
+  @@unique([userId, projectId, slotIndex])
 }

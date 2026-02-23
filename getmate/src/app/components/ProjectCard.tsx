@@ -22,6 +22,10 @@ export function ProjectCard({ project, currentUserId }: { project: any, currentU
     }
   };
 
+  const hasPendingApplication = project.applications?.some(
+    (a: any) => a.userId === currentUserId && a.status === "PENDING"
+  );
+
   return (
     <div
       className="card grid grid-cols-2 gap-6 items-start cursor-pointer hover:bg-[#e7e7c7] transition-colors"

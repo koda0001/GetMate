@@ -177,8 +177,20 @@ exports.Prisma.ProjectScalarFieldEnum = {
   github: 'github',
   link: 'link',
   createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
   authorId: 'authorId',
-  techStack: 'techStack'
+  techStack: 'techStack',
+  category: 'category',
+  status: 'status'
+};
+
+exports.Prisma.ApplicationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  projectId: 'projectId',
+  slotIndex: 'slotIndex',
+  status: 'status',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -195,7 +207,25 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+exports.ProjectCategory = exports.$Enums.ProjectCategory = {
+  WEB: 'WEB',
+  MOBILE: 'MOBILE',
+  GAME: 'GAME',
+  AI: 'AI'
+};
 
+exports.ProjectStatus = exports.$Enums.ProjectStatus = {
+  HIRING: 'HIRING',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED',
+  CANCELED: 'CANCELED'
+};
+
+exports.ApplicationStatus = exports.$Enums.ApplicationStatus = {
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  REJECTED: 'REJECTED'
+};
 
 exports.Prisma.ModelName = {
   Post: 'Post',
@@ -203,7 +233,8 @@ exports.Prisma.ModelName = {
   Session: 'Session',
   User: 'User',
   VerificationToken: 'VerificationToken',
-  Project: 'Project'
+  Project: 'Project',
+  Application: 'Application'
 };
 
 /**

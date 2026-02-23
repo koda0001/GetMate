@@ -10,25 +10,17 @@ const TECH_OPTIONS = [
   "React", "Next.js", "Node.js", "Python", "Django", "Flask", "TypeScript", "JavaScript", "C#", "Java", "Go", "Rust", "PostgreSQL", "MongoDB"
 ];
 
-export function FilterToolbar({ roles = ROLE_OPTIONS, techs = TECH_OPTIONS }: { roles?: string[], techs?: string[] }) {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+export function FilterToolbar({ roles = ROLE_OPTIONS, techs = TECH_OPTIONS, onChange }: { roles?: string[], techs?: string[], onChange?: (filters: { q: string, role: string, techStack: string[], onlyFree: boolean }) => void }) {
+  const [search, setSearch] = useState("");
+  const [role, setRole] = useState("");
+  const [techStack, setTechStack] = useState<string[]>([]);
+  const [onlyFree, setOnlyFree] = useState(false);
 
-  const [search, setSearch] = useState(searchParams.get("q") || "");
-  const [role, setRole] = useState(searchParams.get("role") || "");
-  const [techStack, setTechStack] = useState<string[]>(searchParams.getAll("techStack") || []);
-  const [onlyFree, setOnlyFree] = useState(searchParams.get("free") === "1");
-
-  // Update URL params on filter change
   useEffect(() => {
-    const params = new URLSearchParams();
-    if (search) params.set("q", search);
-    if (role) params.set("role", role);
-    techStack.forEach(t => params.append("techStack", t));
-    if (onlyFree) params.set("free", "1");
-    router.replace(`/?${params.toString()}`);
-    // eslint-disable-next-line
-  }, [search, role, techStack, onlyFree]);
+    if (onChange) {
+      onChange({ q: search, role, techStack, onlyFree });
+    }
+  }, [search, role, techStack, onlyFree, onChange]);
 
   return (
     <form
