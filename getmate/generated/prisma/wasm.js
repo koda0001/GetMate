@@ -87,9 +87,7 @@ Prisma.NullTypes = {
  * Enums
  */
 exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
-  ReadUncommitted: 'ReadUncommitted',
   ReadCommitted: 'ReadCommitted',
-  RepeatableRead: 'RepeatableRead',
   Serializable: 'Serializable'
 });
 
@@ -220,7 +218,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\Admin\\Documents\\Coding\\React\\GetMate\\getmate\\generated\\prisma",
+      "value": "C:\\Users\\Admin\\Documents\\VSCODE\\GetMate\\getmate\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -234,7 +232,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\Admin\\Documents\\Coding\\React\\GetMate\\getmate\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Users\\Admin\\Documents\\VSCODE\\GetMate\\getmate\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -247,7 +245,7 @@ const config = {
   "datasourceNames": [
     "db"
   ],
-  "activeProvider": "postgresql",
+  "activeProvider": "cockroachdb",
   "inlineDatasources": {
     "db": {
       "url": {
@@ -256,8 +254,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\") // DO NOT REMOVE THIS LINE! Required for Prisma CLI.\n  // url property deprecated in Prisma 7, see prisma.config.ts for connection\n}\n\nmodel Post {\n  id        Int      @id @default(autoincrement())\n  name      String\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  createdBy   User   @relation(fields: [createdById], references: [id])\n  createdById String\n\n  @@index([name])\n}\n\n// Necessary for Next auth\nmodel Account {\n  id                       String  @id @default(cuid())\n  userId                   String\n  type                     String\n  provider                 String\n  providerAccountId        String\n  refresh_token            String? // @db.Text\n  access_token             String? // @db.Text\n  expires_at               Int?\n  token_type               String?\n  scope                    String?\n  id_token                 String? // @db.Text\n  session_state            String?\n  user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)\n  refresh_token_expires_in Int?\n\n  @@unique([provider, providerAccountId])\n}\n\nmodel Session {\n  id           String   @id @default(cuid())\n  sessionToken String   @unique\n  userId       String\n  expires      DateTime\n  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)\n}\n\nmodel User {\n  id            String        @id @default(cuid())\n  name          String?\n  email         String?       @unique\n  applications  Application[]\n  emailVerified DateTime?\n  image         String?\n  accounts      Account[]\n  sessions      Session[]\n  bio           String?\n  posts         Post[]\n  projects      Project[]\n}\n\nmodel VerificationToken {\n  identifier String\n  token      String   @unique\n  expires    DateTime\n\n  @@unique([identifier, token])\n}\n\nenum ProjectCategory {\n  WEB\n  MOBILE\n  GAME\n  AI\n}\n\nenum ProjectStatus {\n  HIRING\n  IN_PROGRESS\n  COMPLETED\n  CANCELED\n}\n\nenum ApplicationStatus {\n  PENDING\n  ACCEPTED\n  REJECTED\n}\n\nmodel Project {\n  id              String          @id @default(cuid())\n  title           String\n  description     String\n  slots           Int\n  subscribers     String[] // user IDs\n  roleDefinitions String[]\n  private         Boolean         @default(false)\n  github          String?\n  link            String?\n  createdAt       DateTime        @default(now())\n  updatedAt       DateTime        @default(now()) @updatedAt\n  author          User            @relation(fields: [authorId], references: [id])\n  authorId        String\n  techStack       String[]\n  category        ProjectCategory @default(WEB)\n  status          ProjectStatus   @default(HIRING)\n  applications    Application[]\n\n  // Removed invalid @@index([name]) - no 'name' field exists\n}\n\nmodel Application {\n  id        String            @id @default(cuid())\n  user      User              @relation(fields: [userId], references: [id])\n  userId    String\n  project   Project           @relation(fields: [projectId], references: [id])\n  projectId String\n  slotIndex Int\n  status    ApplicationStatus @default(PENDING)\n  createdAt DateTime          @default(now())\n\n  @@unique([userId, projectId, slotIndex])\n}\n",
-  "inlineSchemaHash": "7faa002546e16d423b32cc43cc908e029875218a0c3ec84899041cb731f27b13",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"cockroachdb\"\n  url      = env(\"DATABASE_URL\") // DO NOT REMOVE THIS LINE! Required for Prisma CLI.\n  // url property deprecated in Prisma 7, see prisma.config.ts for connection\n}\n\nmodel Post {\n  id        Int      @id @default(sequence())\n  name      String\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  createdBy   User   @relation(fields: [createdById], references: [id])\n  createdById String\n\n  @@index([name])\n}\n\n// Necessary for Next auth\nmodel Account {\n  id                       String  @id @default(cuid())\n  userId                   String\n  type                     String\n  provider                 String\n  providerAccountId        String\n  refresh_token            String? // @db.Text\n  access_token             String? // @db.Text\n  expires_at               Int?\n  token_type               String?\n  scope                    String?\n  id_token                 String? // @db.Text\n  session_state            String?\n  user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)\n  refresh_token_expires_in Int?\n\n  @@unique([provider, providerAccountId])\n}\n\nmodel Session {\n  id           String   @id @default(cuid())\n  sessionToken String   @unique\n  userId       String\n  expires      DateTime\n  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)\n}\n\nmodel User {\n  id            String        @id @default(cuid())\n  name          String?\n  email         String?       @unique\n  applications  Application[]\n  emailVerified DateTime?\n  image         String?\n  accounts      Account[]\n  sessions      Session[]\n  bio           String?\n  posts         Post[]\n  projects      Project[]\n}\n\nmodel VerificationToken {\n  identifier String\n  token      String   @unique\n  expires    DateTime\n\n  @@unique([identifier, token])\n}\n\nenum ProjectCategory {\n  WEB\n  MOBILE\n  GAME\n  AI\n}\n\nenum ProjectStatus {\n  HIRING\n  IN_PROGRESS\n  COMPLETED\n  CANCELED\n}\n\nenum ApplicationStatus {\n  PENDING\n  ACCEPTED\n  REJECTED\n}\n\nmodel Project {\n  id              String          @id @default(cuid())\n  title           String\n  description     String\n  slots           Int\n  subscribers     String[] // user IDs\n  roleDefinitions String[]\n  private         Boolean         @default(false)\n  github          String?\n  link            String?\n  createdAt       DateTime        @default(now())\n  updatedAt       DateTime        @default(now()) @updatedAt\n  author          User            @relation(fields: [authorId], references: [id])\n  authorId        String\n  techStack       String[]\n  category        ProjectCategory @default(WEB)\n  status          ProjectStatus   @default(HIRING)\n  applications    Application[]\n\n  // Removed invalid @@index([name]) - no 'name' field exists\n}\n\nmodel Application {\n  id        String            @id @default(cuid())\n  user      User              @relation(fields: [userId], references: [id])\n  userId    String\n  project   Project           @relation(fields: [projectId], references: [id])\n  projectId String\n  slotIndex Int\n  status    ApplicationStatus @default(PENDING)\n  createdAt DateTime          @default(now())\n\n  @@unique([userId, projectId, slotIndex])\n}\n",
+  "inlineSchemaHash": "9580e1b116f0e5fcd0c0cf3bc40a3e199fbc552c7ade87ea2a55cbae7275daae",
   "copyEngine": true
 }
 config.dirname = '/'
