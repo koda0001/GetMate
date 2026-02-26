@@ -11,7 +11,7 @@ export function SubmitButton() {
       disabled={pending}
       className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-bold disabled:bg-gray-400 transition"
     >
-      {pending ? "Saving to Database..." : "Save Project"}
+      {pending ? "Saving to Database..." : "Save Data"}
     </button>
   );
 }

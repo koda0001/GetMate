@@ -19,7 +19,7 @@ export async function createProject(formData: FormData) {
   const isPrivate = formData.get("private") === "on";
   const roleDefinitions = formData.getAll("slot_role") as string[];
   const techStack = formData.getAll("techStack") as string[]; // <-- NEW
-
+  
   // 3. DATABASE EXECUTION (The Chef)
   await db.project.create({
     data: {
@@ -84,7 +84,7 @@ export async function updateProject(formData: FormData) {
       techStack, // <-- NEW
     },
   });
-
+  
   // 4. UI UPDATE (The Notification)
   // This tells Next.js: "Hey, the list of projects changed, refresh the page!"
   redirect("/");
@@ -94,18 +94,18 @@ export async function deleteProject(formData: FormData) {
   // 1. AUTHENTICATION (The Bouncer)
   const session = await auth();
   if (!session) throw new Error("Log in first!");
-
+  
   // 2. DATA COLLECTION (The Ingredients)
   const projectId = formData.get("projectId") as string;
-
+  
   // 3. AUTHENTICATION (The Bouncer)
   const project = await db.project.findUnique({
-  where: { id: projectId },
-  select: { authorId: true }
+    where: { id: projectId },
+    select: { authorId: true }
   });
   if (!project || project.authorId !== session.user.id) {
-  throw new Error("To nie Twój projekt, ziomeczku!");
-  }
+    throw new Error("To nie Twój projekt, ziomeczku!");
+}
 
   // 3. DATABASE EXECUTION (The Chef)
   await db.project.delete({
@@ -113,7 +113,7 @@ export async function deleteProject(formData: FormData) {
       id: projectId
     }
   });
-
+  
   // 4. UI UPDATE (The Notification)
   // This tells Next.js: "Hey, the list of projects changed, refresh the page!"
   redirect("/");
@@ -123,13 +123,13 @@ export async function deleteProject(formData: FormData) {
 export async function joinProject(projectId: string, slotIndex: number) {
   const session = await auth();
   if (!session) throw new Error("Log in first!");
-
+  
   const project = await db.project.findUnique({
     where: { id: projectId },
     include: { applications: true }
   });
   if (!project) throw new Error("Project not found");
-
+  
   // Check if user already applied for this slot
   const existingApp = await db.application.findFirst({
     where: {
@@ -140,7 +140,7 @@ export async function joinProject(projectId: string, slotIndex: number) {
     }
   });
   if (existingApp) throw new Error("You already applied for this slot!");
-
+  
   // Check if slot is already filled
   if (project.subscribers[slotIndex] && project.subscribers[slotIndex].trim() !== "") {
     throw new Error("Slot already taken!");
@@ -158,27 +158,27 @@ export async function joinProject(projectId: string, slotIndex: number) {
 }
 
 // Recruitment: Owner accepts an application
-export async function acceptApplication(applicationId: string) {
+export async function acceptApplication(applicationId: any) {
   const session = await auth();
   if (!session) throw new Error("Log in first!");
-
+  
   const application = await db.application.findUnique({
     where: { id: applicationId },
     include: { project: true }
   });
   if (!application) throw new Error("Application not found");
   if (application.project.authorId !== session.user.id) throw new Error("Not your project!");
-
+  
   // Check if slot is already filled
   const project = application.project;
-  if (project.subscribers[application.slotIndex] && project.subscribers[application.slotIndex].trim() !== "") {
+  if (project.subscribers[application.slotIndex]?.trim() !== "") {
     throw new Error("Slot already taken!");
   }
-
+  
   // Accept application: update project.subscribers and application status
   const newSubscribers = [...project.subscribers];
   newSubscribers[application.slotIndex] = application.userId;
-
+  
   await db.$transaction([
     db.project.update({
       where: { id: project.id },
@@ -202,20 +202,40 @@ export async function acceptApplication(applicationId: string) {
 }
 
 // Recruitment: Owner rejects an application
-export async function rejectApplication(applicationId: string) {
+export async function rejectApplication(applicationId: any) {
   const session = await auth();
   if (!session) throw new Error("Log in first!");
-
+  
   const application = await db.application.findUnique({
     where: { id: applicationId },
     include: { project: true }
   });
   if (!application) throw new Error("Application not found");
   if (application.project.authorId !== session.user.id) throw new Error("Not your project!");
-
+  
   await db.application.update({
     where: { id: applicationId },
     data: { status: "REJECTED" }
   });
   revalidatePath("/");
+}
+
+// Update user profile (bio, social links, etc.)
+export async function updateProfile(formData: FormData) {
+  const session = await auth();
+  if (!session) throw new Error("Log in first!");
+
+  const userId = formData.get("userId") as string;
+  if (session.user.id !== userId) throw new Error("You can only update your own profile!");
+
+  const bio = formData.get("bio") as string;
+  // Optionally handle github/linkedin fields if you want to store them directly
+  // const github = formData.get("github") as string;
+  // const linkedin = formData.get("linkedin") as string;
+
+  await db.user.update({
+    where: { id: userId },
+    data: { bio },
+  });
+  revalidatePath(`/profile/${userId}`);
 }

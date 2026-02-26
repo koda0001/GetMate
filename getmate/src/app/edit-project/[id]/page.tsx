@@ -1,7 +1,7 @@
 import { db } from "@/server/db";
 import { auth } from "@/server/auth";
 import { redirect } from "next/navigation";
-import { deleteProject, updateProject } from "../../actions";
+import { deleteProject, updateProject, acceptApplication, rejectApplication } from "../../actions";
 import { SubmitButton } from "@/app/components/SubmitButton";
 import { DeleteButton } from "@/app/components/DeleteButton";
 import { SlotsGrid } from "@/app/components/SlotsGrid";
@@ -139,11 +139,11 @@ export default async function EditProjectPage({ params }: { params: { id: string
                   <span className="font-mono">{a.user?.name || a.userId}</span>
                   <span className="text-xs bg-[#E1D9BC] border border-[#30364F] px-2 py-1 rounded">{project.roleDefinitions[a.slotIndex]}</span>
                   <a href={`/profile/${a.userId}`} className="underline text-blue-700 text-xs">Profile</a>
-                  <form action={`/api/acceptApplication`} method="POST" className="inline">
+                  <form action={acceptApplication} className="inline">
                     <input type="hidden" name="applicationId" value={a.id} />
                     <button className="bg-green-200 border-2 border-[#30364F] text-[#30364F] px-2 py-1 rounded ml-2">ACCEPT</button>
-                  </form>
-                  <form action={`/api/rejectApplication`} method="POST" className="inline">
+                  </form> 
+                  <form action={rejectApplication} className="inline">
                     <input type="hidden" name="applicationId" value={a.id} />
                     <button className="bg-red-200 border-2 border-[#30364F] text-[#30364F] px-2 py-1 rounded ml-2">REJECT</button>
                   </form>
