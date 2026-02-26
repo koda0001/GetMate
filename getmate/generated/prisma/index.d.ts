@@ -4901,6 +4901,7 @@ export namespace Prisma {
     id: string | null
     name: string | null
     email: string | null
+    availability: string | null
     emailVerified: Date | null
     image: string | null
     bio: string | null
@@ -4910,6 +4911,7 @@ export namespace Prisma {
     id: string | null
     name: string | null
     email: string | null
+    availability: string | null
     emailVerified: Date | null
     image: string | null
     bio: string | null
@@ -4919,9 +4921,11 @@ export namespace Prisma {
     id: number
     name: number
     email: number
+    availability: number
     emailVerified: number
     image: number
     bio: number
+    techStack: number
     _all: number
   }
 
@@ -4930,6 +4934,7 @@ export namespace Prisma {
     id?: true
     name?: true
     email?: true
+    availability?: true
     emailVerified?: true
     image?: true
     bio?: true
@@ -4939,6 +4944,7 @@ export namespace Prisma {
     id?: true
     name?: true
     email?: true
+    availability?: true
     emailVerified?: true
     image?: true
     bio?: true
@@ -4948,9 +4954,11 @@ export namespace Prisma {
     id?: true
     name?: true
     email?: true
+    availability?: true
     emailVerified?: true
     image?: true
     bio?: true
+    techStack?: true
     _all?: true
   }
 
@@ -5030,9 +5038,11 @@ export namespace Prisma {
     id: string
     name: string | null
     email: string | null
+    availability: string
     emailVerified: Date | null
     image: string | null
     bio: string | null
+    techStack: string[]
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -5056,9 +5066,11 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     email?: boolean
+    availability?: boolean
     emailVerified?: boolean
     image?: boolean
     bio?: boolean
+    techStack?: boolean
     applications?: boolean | User$applicationsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
@@ -5071,30 +5083,36 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     email?: boolean
+    availability?: boolean
     emailVerified?: boolean
     image?: boolean
     bio?: boolean
+    techStack?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
     email?: boolean
+    availability?: boolean
     emailVerified?: boolean
     image?: boolean
     bio?: boolean
+    techStack?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
     id?: boolean
     name?: boolean
     email?: boolean
+    availability?: boolean
     emailVerified?: boolean
     image?: boolean
     bio?: boolean
+    techStack?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "bio", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "availability" | "emailVerified" | "image" | "bio" | "techStack", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     applications?: boolean | User$applicationsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
@@ -5119,9 +5137,11 @@ export namespace Prisma {
       id: string
       name: string | null
       email: string | null
+      availability: string
       emailVerified: Date | null
       image: string | null
       bio: string | null
+      techStack: string[]
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -5553,9 +5573,11 @@ export namespace Prisma {
     readonly id: FieldRef<"User", 'String'>
     readonly name: FieldRef<"User", 'String'>
     readonly email: FieldRef<"User", 'String'>
+    readonly availability: FieldRef<"User", 'String'>
     readonly emailVerified: FieldRef<"User", 'DateTime'>
     readonly image: FieldRef<"User", 'String'>
     readonly bio: FieldRef<"User", 'String'>
+    readonly techStack: FieldRef<"User", 'String[]'>
   }
     
 
@@ -9460,9 +9482,11 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     email: 'email',
+    availability: 'availability',
     emailVerified: 'emailVerified',
     image: 'image',
-    bio: 'bio'
+    bio: 'bio',
+    techStack: 'techStack'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -9859,9 +9883,11 @@ export namespace Prisma {
     id?: StringFilter<"User"> | string
     name?: StringNullableFilter<"User"> | string | null
     email?: StringNullableFilter<"User"> | string | null
+    availability?: StringFilter<"User"> | string
     emailVerified?: DateTimeNullableFilter<"User"> | Date | string | null
     image?: StringNullableFilter<"User"> | string | null
     bio?: StringNullableFilter<"User"> | string | null
+    techStack?: StringNullableListFilter<"User">
     applications?: ApplicationListRelationFilter
     accounts?: AccountListRelationFilter
     sessions?: SessionListRelationFilter
@@ -9873,9 +9899,11 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrderInput | SortOrder
     email?: SortOrderInput | SortOrder
+    availability?: SortOrder
     emailVerified?: SortOrderInput | SortOrder
     image?: SortOrderInput | SortOrder
     bio?: SortOrderInput | SortOrder
+    techStack?: SortOrder
     applications?: ApplicationOrderByRelationAggregateInput
     accounts?: AccountOrderByRelationAggregateInput
     sessions?: SessionOrderByRelationAggregateInput
@@ -9890,9 +9918,11 @@ export namespace Prisma {
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
     name?: StringNullableFilter<"User"> | string | null
+    availability?: StringFilter<"User"> | string
     emailVerified?: DateTimeNullableFilter<"User"> | Date | string | null
     image?: StringNullableFilter<"User"> | string | null
     bio?: StringNullableFilter<"User"> | string | null
+    techStack?: StringNullableListFilter<"User">
     applications?: ApplicationListRelationFilter
     accounts?: AccountListRelationFilter
     sessions?: SessionListRelationFilter
@@ -9904,9 +9934,11 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrderInput | SortOrder
     email?: SortOrderInput | SortOrder
+    availability?: SortOrder
     emailVerified?: SortOrderInput | SortOrder
     image?: SortOrderInput | SortOrder
     bio?: SortOrderInput | SortOrder
+    techStack?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -9919,9 +9951,11 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"User"> | string
     name?: StringNullableWithAggregatesFilter<"User"> | string | null
     email?: StringNullableWithAggregatesFilter<"User"> | string | null
+    availability?: StringWithAggregatesFilter<"User"> | string
     emailVerified?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     image?: StringNullableWithAggregatesFilter<"User"> | string | null
     bio?: StringNullableWithAggregatesFilter<"User"> | string | null
+    techStack?: StringNullableListFilter<"User">
   }
 
   export type VerificationTokenWhereInput = {
@@ -10358,9 +10392,11 @@ export namespace Prisma {
     id?: string
     name?: string | null
     email?: string | null
+    availability?: string
     emailVerified?: Date | string | null
     image?: string | null
     bio?: string | null
+    techStack?: UserCreatetechStackInput | string[]
     applications?: ApplicationCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -10372,9 +10408,11 @@ export namespace Prisma {
     id?: string
     name?: string | null
     email?: string | null
+    availability?: string
     emailVerified?: Date | string | null
     image?: string | null
     bio?: string | null
+    techStack?: UserCreatetechStackInput | string[]
     applications?: ApplicationUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -10386,9 +10424,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    availability?: StringFieldUpdateOperationsInput | string
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    techStack?: UserUpdatetechStackInput | string[]
     applications?: ApplicationUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -10400,9 +10440,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    availability?: StringFieldUpdateOperationsInput | string
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    techStack?: UserUpdatetechStackInput | string[]
     applications?: ApplicationUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -10414,27 +10456,33 @@ export namespace Prisma {
     id?: string
     name?: string | null
     email?: string | null
+    availability?: string
     emailVerified?: Date | string | null
     image?: string | null
     bio?: string | null
+    techStack?: UserCreatetechStackInput | string[]
   }
 
   export type UserUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    availability?: StringFieldUpdateOperationsInput | string
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    techStack?: UserUpdatetechStackInput | string[]
   }
 
   export type UserUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    availability?: StringFieldUpdateOperationsInput | string
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    techStack?: UserUpdatetechStackInput | string[]
   }
 
   export type VerificationTokenCreateInput = {
@@ -10951,6 +10999,14 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
   export type ApplicationListRelationFilter = {
     every?: ApplicationWhereInput
     some?: ApplicationWhereInput
@@ -11005,15 +11061,18 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     email?: SortOrder
+    availability?: SortOrder
     emailVerified?: SortOrder
     image?: SortOrder
     bio?: SortOrder
+    techStack?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     email?: SortOrder
+    availability?: SortOrder
     emailVerified?: SortOrder
     image?: SortOrder
     bio?: SortOrder
@@ -11023,6 +11082,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     email?: SortOrder
+    availability?: SortOrder
     emailVerified?: SortOrder
     image?: SortOrder
     bio?: SortOrder
@@ -11063,14 +11123,6 @@ export namespace Prisma {
     identifier?: SortOrder
     token?: SortOrder
     expires?: SortOrder
-  }
-
-  export type StringNullableListFilter<$PrismaModel = never> = {
-    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    has?: string | StringFieldRefInput<$PrismaModel> | null
-    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
-    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
-    isEmpty?: boolean
   }
 
   export type BoolFilter<$PrismaModel = never> = {
@@ -11309,6 +11361,10 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSessionsInput, UserUpdateWithoutSessionsInput>, UserUncheckedUpdateWithoutSessionsInput>
   }
 
+  export type UserCreatetechStackInput = {
+    set: string[]
+  }
+
   export type ApplicationCreateNestedManyWithoutUserInput = {
     create?: XOR<ApplicationCreateWithoutUserInput, ApplicationUncheckedCreateWithoutUserInput> | ApplicationCreateWithoutUserInput[] | ApplicationUncheckedCreateWithoutUserInput[]
     connectOrCreate?: ApplicationCreateOrConnectWithoutUserInput | ApplicationCreateOrConnectWithoutUserInput[]
@@ -11381,6 +11437,11 @@ export namespace Prisma {
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null
+  }
+
+  export type UserUpdatetechStackInput = {
+    set?: string[]
+    push?: string | string[]
   }
 
   export type ApplicationUpdateManyWithoutUserNestedInput = {
@@ -11906,9 +11967,11 @@ export namespace Prisma {
     id?: string
     name?: string | null
     email?: string | null
+    availability?: string
     emailVerified?: Date | string | null
     image?: string | null
     bio?: string | null
+    techStack?: UserCreatetechStackInput | string[]
     applications?: ApplicationCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -11919,9 +11982,11 @@ export namespace Prisma {
     id?: string
     name?: string | null
     email?: string | null
+    availability?: string
     emailVerified?: Date | string | null
     image?: string | null
     bio?: string | null
+    techStack?: UserCreatetechStackInput | string[]
     applications?: ApplicationUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -11948,9 +12013,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    availability?: StringFieldUpdateOperationsInput | string
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    techStack?: UserUpdatetechStackInput | string[]
     applications?: ApplicationUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -11961,9 +12028,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    availability?: StringFieldUpdateOperationsInput | string
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    techStack?: UserUpdatetechStackInput | string[]
     applications?: ApplicationUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -11974,9 +12043,11 @@ export namespace Prisma {
     id?: string
     name?: string | null
     email?: string | null
+    availability?: string
     emailVerified?: Date | string | null
     image?: string | null
     bio?: string | null
+    techStack?: UserCreatetechStackInput | string[]
     applications?: ApplicationCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     posts?: PostCreateNestedManyWithoutCreatedByInput
@@ -11987,9 +12058,11 @@ export namespace Prisma {
     id?: string
     name?: string | null
     email?: string | null
+    availability?: string
     emailVerified?: Date | string | null
     image?: string | null
     bio?: string | null
+    techStack?: UserCreatetechStackInput | string[]
     applications?: ApplicationUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     posts?: PostUncheckedCreateNestedManyWithoutCreatedByInput
@@ -12016,9 +12089,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    availability?: StringFieldUpdateOperationsInput | string
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    techStack?: UserUpdatetechStackInput | string[]
     applications?: ApplicationUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     posts?: PostUpdateManyWithoutCreatedByNestedInput
@@ -12029,9 +12104,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    availability?: StringFieldUpdateOperationsInput | string
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    techStack?: UserUpdatetechStackInput | string[]
     applications?: ApplicationUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     posts?: PostUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -12042,9 +12119,11 @@ export namespace Prisma {
     id?: string
     name?: string | null
     email?: string | null
+    availability?: string
     emailVerified?: Date | string | null
     image?: string | null
     bio?: string | null
+    techStack?: UserCreatetechStackInput | string[]
     applications?: ApplicationCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     posts?: PostCreateNestedManyWithoutCreatedByInput
@@ -12055,9 +12134,11 @@ export namespace Prisma {
     id?: string
     name?: string | null
     email?: string | null
+    availability?: string
     emailVerified?: Date | string | null
     image?: string | null
     bio?: string | null
+    techStack?: UserCreatetechStackInput | string[]
     applications?: ApplicationUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     posts?: PostUncheckedCreateNestedManyWithoutCreatedByInput
@@ -12084,9 +12165,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    availability?: StringFieldUpdateOperationsInput | string
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    techStack?: UserUpdatetechStackInput | string[]
     applications?: ApplicationUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     posts?: PostUpdateManyWithoutCreatedByNestedInput
@@ -12097,9 +12180,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    availability?: StringFieldUpdateOperationsInput | string
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    techStack?: UserUpdatetechStackInput | string[]
     applications?: ApplicationUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     posts?: PostUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -12420,9 +12505,11 @@ export namespace Prisma {
     id?: string
     name?: string | null
     email?: string | null
+    availability?: string
     emailVerified?: Date | string | null
     image?: string | null
     bio?: string | null
+    techStack?: UserCreatetechStackInput | string[]
     applications?: ApplicationCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -12433,9 +12520,11 @@ export namespace Prisma {
     id?: string
     name?: string | null
     email?: string | null
+    availability?: string
     emailVerified?: Date | string | null
     image?: string | null
     bio?: string | null
+    techStack?: UserCreatetechStackInput | string[]
     applications?: ApplicationUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -12488,9 +12577,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    availability?: StringFieldUpdateOperationsInput | string
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    techStack?: UserUpdatetechStackInput | string[]
     applications?: ApplicationUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -12501,9 +12592,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    availability?: StringFieldUpdateOperationsInput | string
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    techStack?: UserUpdatetechStackInput | string[]
     applications?: ApplicationUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -12530,9 +12623,11 @@ export namespace Prisma {
     id?: string
     name?: string | null
     email?: string | null
+    availability?: string
     emailVerified?: Date | string | null
     image?: string | null
     bio?: string | null
+    techStack?: UserCreatetechStackInput | string[]
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     posts?: PostCreateNestedManyWithoutCreatedByInput
@@ -12543,9 +12638,11 @@ export namespace Prisma {
     id?: string
     name?: string | null
     email?: string | null
+    availability?: string
     emailVerified?: Date | string | null
     image?: string | null
     bio?: string | null
+    techStack?: UserCreatetechStackInput | string[]
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     posts?: PostUncheckedCreateNestedManyWithoutCreatedByInput
@@ -12613,9 +12710,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    availability?: StringFieldUpdateOperationsInput | string
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    techStack?: UserUpdatetechStackInput | string[]
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     posts?: PostUpdateManyWithoutCreatedByNestedInput
@@ -12626,9 +12725,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    availability?: StringFieldUpdateOperationsInput | string
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
+    techStack?: UserUpdatetechStackInput | string[]
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     posts?: PostUncheckedUpdateManyWithoutCreatedByNestedInput

@@ -5,11 +5,13 @@ import { updateProfile } from "../../actions";
 import Link from "next/link";
 import { SubmitButton } from "@/app/components/SubmitButton";
 import { ProjectCard } from "@/app/components/ProjectCard";
+import { TechStackSelector } from "@/app/components/TechStackSelector";
 import React from "react";
 
 export default async function ProfilePage({ params }: { params: { id: string } }) {
   const session = await auth();
   const isMe = session?.user?.id === params.id;
+  const STATUSES = ["Available", "Looking for projects", "Busy", "Not looking"];
 
   const user = await db.user.findUnique({
     where: { id: params.id },
@@ -79,27 +81,37 @@ export default async function ProfilePage({ params }: { params: { id: string } }
         </div>
       </div>
 
-      {/* Availability Badge */}
-      <div className="mb-4">
-        <span className="inline-block px-3 py-1 font-bold text-[#F0F0DB] bg-[#30364F] border-2 border-[#30364F] rounded shadow-[2px_2px_0_#30364F]">
-          {user.availability || "Looking for projects"}
-        </span>
-      </div>
 
       {/* Bio */}
       <div className="mb-6">
         <h2 className="font-bold text-[#30364F] mb-1">Bio</h2>
         {isMe ? (
           <form action={updateProfile} className="space-y-2">
+            {/* Availability Badge */}
+            <div className="mb-4">
+              <select 
+                className="bg-[#E1D9BC] border-2 border-[#30364F] rounded-sm px-2 py-1 font-mono text-sm"
+                defaultValue={user.availability || ""}
+                name="availability"
+              >
+                {STATUSES.map((status) => (
+                  <option key={status} value={status}>{status}</option>
+                ))}
+              </select>
+              <input type="hidden" name="availability" value={user.availability} />
+            </div>
             <input type="hidden" name="userId" value={user.id} />
             <textarea
               name="bio"
               defaultValue={user.bio || ""}
               className="w-full border-2 border-[#30364F] bg-[#F0F0DB] rounded p-2 font-mono"
             />
-            <SubmitButton className="bg-[#E1D9BC] border-2 border-[#30364F] px-4 py-2 rounded shadow-[4px_4px_0_#30364F] font-mono hover:bg-[#F0F0DB]">
-              Save
-            </SubmitButton>
+            {/* Tech Stack */}
+            <div className="mb-6">
+              <h2 className="font-bold text-[#30364F] mb-1">Tech Stack</h2>
+                  <TechStackSelector initial={user.techStack || []} mode="edit" />
+            </div>
+            <SubmitButton/>
           </form>
         ) : (
           <p className="bg-[#F0F0DB] border-2 border-[#30364F] rounded p-3">{user.bio || "No bio yet."}</p>
@@ -122,19 +134,9 @@ export default async function ProfilePage({ params }: { params: { id: string } }
         </div>
       </div>
 
-      {/* Tech Stack */}
       <div className="mb-6">
         <h2 className="font-bold text-[#30364F] mb-1">Tech Stack</h2>
-        <div className="flex flex-wrap gap-2">
-          {(user.techStack || []).map((tech: string) => (
-            <span
-              key={tech}
-              className="px-2 py-1 bg-[#E1D9BC] border-2 border-[#30364F] rounded shadow-[2px_2px_0_#30364F] text-[#30364F] text-xs"
-            >
-              {tech}
-            </span>
-          ))}
-        </div>
+        <TechStackSelector initial={user.techStack || []} mode="view" />
       </div>
 
       {/* Projects List */}

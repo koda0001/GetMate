@@ -228,14 +228,22 @@ export async function updateProfile(formData: FormData) {
   const userId = formData.get("userId") as string;
   if (session.user.id !== userId) throw new Error("You can only update your own profile!");
 
+  const availability = formData.get("availability") as string;
   const bio = formData.get("bio") as string;
+  const techStack = formData.getAll("techStack") as string[];
   // Optionally handle github/linkedin fields if you want to store them directly
   // const github = formData.get("github") as string;
   // const linkedin = formData.get("linkedin") as string;
 
   await db.user.update({
     where: { id: userId },
-    data: { bio },
+    data: { 
+      availability,
+      bio,
+      techStack
+    },
   });
+  // tu trzeba jakis wait czy cos bo update leci w serwer ale strona sie za szybko updatuje i przez to 
+  //nie widac zmian w tym polu wyboru, ale jak sie juz odwiezy strone to zmiany sie pokazujo
   revalidatePath(`/profile/${userId}`);
 }
