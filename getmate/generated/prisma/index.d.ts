@@ -8340,6 +8340,7 @@ export namespace Prisma {
     slotIndex: number | null
     status: $Enums.ApplicationStatus | null
     createdAt: Date | null
+    role: string | null
   }
 
   export type ApplicationMaxAggregateOutputType = {
@@ -8349,6 +8350,7 @@ export namespace Prisma {
     slotIndex: number | null
     status: $Enums.ApplicationStatus | null
     createdAt: Date | null
+    role: string | null
   }
 
   export type ApplicationCountAggregateOutputType = {
@@ -8358,6 +8360,7 @@ export namespace Prisma {
     slotIndex: number
     status: number
     createdAt: number
+    role: number
     _all: number
   }
 
@@ -8377,6 +8380,7 @@ export namespace Prisma {
     slotIndex?: true
     status?: true
     createdAt?: true
+    role?: true
   }
 
   export type ApplicationMaxAggregateInputType = {
@@ -8386,6 +8390,7 @@ export namespace Prisma {
     slotIndex?: true
     status?: true
     createdAt?: true
+    role?: true
   }
 
   export type ApplicationCountAggregateInputType = {
@@ -8395,6 +8400,7 @@ export namespace Prisma {
     slotIndex?: true
     status?: true
     createdAt?: true
+    role?: true
     _all?: true
   }
 
@@ -8491,6 +8497,7 @@ export namespace Prisma {
     slotIndex: number
     status: $Enums.ApplicationStatus
     createdAt: Date
+    role: string
     _count: ApplicationCountAggregateOutputType | null
     _avg: ApplicationAvgAggregateOutputType | null
     _sum: ApplicationSumAggregateOutputType | null
@@ -8519,6 +8526,7 @@ export namespace Prisma {
     slotIndex?: boolean
     status?: boolean
     createdAt?: boolean
+    role?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     project?: boolean | ProjectDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["application"]>
@@ -8530,6 +8538,7 @@ export namespace Prisma {
     slotIndex?: boolean
     status?: boolean
     createdAt?: boolean
+    role?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     project?: boolean | ProjectDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["application"]>
@@ -8541,6 +8550,7 @@ export namespace Prisma {
     slotIndex?: boolean
     status?: boolean
     createdAt?: boolean
+    role?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     project?: boolean | ProjectDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["application"]>
@@ -8552,9 +8562,10 @@ export namespace Prisma {
     slotIndex?: boolean
     status?: boolean
     createdAt?: boolean
+    role?: boolean
   }
 
-  export type ApplicationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "projectId" | "slotIndex" | "status" | "createdAt", ExtArgs["result"]["application"]>
+  export type ApplicationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "projectId" | "slotIndex" | "status" | "createdAt" | "role", ExtArgs["result"]["application"]>
   export type ApplicationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     project?: boolean | ProjectDefaultArgs<ExtArgs>
@@ -8581,6 +8592,7 @@ export namespace Prisma {
       slotIndex: number
       status: $Enums.ApplicationStatus
       createdAt: Date
+      role: string
     }, ExtArgs["result"]["application"]>
     composites: {}
   }
@@ -9012,6 +9024,7 @@ export namespace Prisma {
     readonly slotIndex: FieldRef<"Application", 'Int'>
     readonly status: FieldRef<"Application", 'ApplicationStatus'>
     readonly createdAt: FieldRef<"Application", 'DateTime'>
+    readonly role: FieldRef<"Application", 'String'>
   }
     
 
@@ -9528,7 +9541,8 @@ export namespace Prisma {
     projectId: 'projectId',
     slotIndex: 'slotIndex',
     status: 'status',
-    createdAt: 'createdAt'
+    createdAt: 'createdAt',
+    role: 'role'
   };
 
   export type ApplicationScalarFieldEnum = (typeof ApplicationScalarFieldEnum)[keyof typeof ApplicationScalarFieldEnum]
@@ -10121,6 +10135,7 @@ export namespace Prisma {
     slotIndex?: IntFilter<"Application"> | number
     status?: EnumApplicationStatusFilter<"Application"> | $Enums.ApplicationStatus
     createdAt?: DateTimeFilter<"Application"> | Date | string
+    role?: StringFilter<"Application"> | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
   }
@@ -10132,6 +10147,7 @@ export namespace Prisma {
     slotIndex?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
+    role?: SortOrder
     user?: UserOrderByWithRelationInput
     project?: ProjectOrderByWithRelationInput
   }
@@ -10147,6 +10163,7 @@ export namespace Prisma {
     slotIndex?: IntFilter<"Application"> | number
     status?: EnumApplicationStatusFilter<"Application"> | $Enums.ApplicationStatus
     createdAt?: DateTimeFilter<"Application"> | Date | string
+    role?: StringFilter<"Application"> | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
   }, "id" | "userId_projectId_slotIndex">
@@ -10158,6 +10175,7 @@ export namespace Prisma {
     slotIndex?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
+    role?: SortOrder
     _count?: ApplicationCountOrderByAggregateInput
     _avg?: ApplicationAvgOrderByAggregateInput
     _max?: ApplicationMaxOrderByAggregateInput
@@ -10175,6 +10193,7 @@ export namespace Prisma {
     slotIndex?: IntWithAggregatesFilter<"Application"> | number
     status?: EnumApplicationStatusWithAggregatesFilter<"Application"> | $Enums.ApplicationStatus
     createdAt?: DateTimeWithAggregatesFilter<"Application"> | Date | string
+    role?: StringWithAggregatesFilter<"Application"> | string
   }
 
   export type PostCreateInput = {
@@ -10661,6 +10680,7 @@ export namespace Prisma {
     slotIndex: number
     status?: $Enums.ApplicationStatus
     createdAt?: Date | string
+    role: string
     user: UserCreateNestedOneWithoutApplicationsInput
     project: ProjectCreateNestedOneWithoutApplicationsInput
   }
@@ -10672,6 +10692,7 @@ export namespace Prisma {
     slotIndex: number
     status?: $Enums.ApplicationStatus
     createdAt?: Date | string
+    role: string
   }
 
   export type ApplicationUpdateInput = {
@@ -10679,6 +10700,7 @@ export namespace Prisma {
     slotIndex?: IntFieldUpdateOperationsInput | number
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: StringFieldUpdateOperationsInput | string
     user?: UserUpdateOneRequiredWithoutApplicationsNestedInput
     project?: ProjectUpdateOneRequiredWithoutApplicationsNestedInput
   }
@@ -10690,6 +10712,7 @@ export namespace Prisma {
     slotIndex?: IntFieldUpdateOperationsInput | number
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: StringFieldUpdateOperationsInput | string
   }
 
   export type ApplicationCreateManyInput = {
@@ -10699,6 +10722,7 @@ export namespace Prisma {
     slotIndex: number
     status?: $Enums.ApplicationStatus
     createdAt?: Date | string
+    role: string
   }
 
   export type ApplicationUpdateManyMutationInput = {
@@ -10706,6 +10730,7 @@ export namespace Prisma {
     slotIndex?: IntFieldUpdateOperationsInput | number
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: StringFieldUpdateOperationsInput | string
   }
 
   export type ApplicationUncheckedUpdateManyInput = {
@@ -10715,6 +10740,7 @@ export namespace Prisma {
     slotIndex?: IntFieldUpdateOperationsInput | number
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: StringFieldUpdateOperationsInput | string
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -11253,6 +11279,7 @@ export namespace Prisma {
     slotIndex?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
+    role?: SortOrder
   }
 
   export type ApplicationAvgOrderByAggregateInput = {
@@ -11266,6 +11293,7 @@ export namespace Prisma {
     slotIndex?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
+    role?: SortOrder
   }
 
   export type ApplicationMinOrderByAggregateInput = {
@@ -11275,6 +11303,7 @@ export namespace Prisma {
     slotIndex?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
+    role?: SortOrder
   }
 
   export type ApplicationSumOrderByAggregateInput = {
@@ -12196,6 +12225,7 @@ export namespace Prisma {
     slotIndex: number
     status?: $Enums.ApplicationStatus
     createdAt?: Date | string
+    role: string
     project: ProjectCreateNestedOneWithoutApplicationsInput
   }
 
@@ -12205,6 +12235,7 @@ export namespace Prisma {
     slotIndex: number
     status?: $Enums.ApplicationStatus
     createdAt?: Date | string
+    role: string
   }
 
   export type ApplicationCreateOrConnectWithoutUserInput = {
@@ -12374,6 +12405,7 @@ export namespace Prisma {
     slotIndex?: IntFilter<"Application"> | number
     status?: EnumApplicationStatusFilter<"Application"> | $Enums.ApplicationStatus
     createdAt?: DateTimeFilter<"Application"> | Date | string
+    role?: StringFilter<"Application"> | string
   }
 
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
@@ -12541,6 +12573,7 @@ export namespace Prisma {
     slotIndex: number
     status?: $Enums.ApplicationStatus
     createdAt?: Date | string
+    role: string
     user: UserCreateNestedOneWithoutApplicationsInput
   }
 
@@ -12550,6 +12583,7 @@ export namespace Prisma {
     slotIndex: number
     status?: $Enums.ApplicationStatus
     createdAt?: Date | string
+    role: string
   }
 
   export type ApplicationCreateOrConnectWithoutProjectInput = {
@@ -12789,6 +12823,7 @@ export namespace Prisma {
     slotIndex: number
     status?: $Enums.ApplicationStatus
     createdAt?: Date | string
+    role: string
   }
 
   export type AccountCreateManyUserInput = {
@@ -12841,6 +12876,7 @@ export namespace Prisma {
     slotIndex?: IntFieldUpdateOperationsInput | number
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: StringFieldUpdateOperationsInput | string
     project?: ProjectUpdateOneRequiredWithoutApplicationsNestedInput
   }
 
@@ -12850,6 +12886,7 @@ export namespace Prisma {
     slotIndex?: IntFieldUpdateOperationsInput | number
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: StringFieldUpdateOperationsInput | string
   }
 
   export type ApplicationUncheckedUpdateManyWithoutUserInput = {
@@ -12858,6 +12895,7 @@ export namespace Prisma {
     slotIndex?: IntFieldUpdateOperationsInput | number
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: StringFieldUpdateOperationsInput | string
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -13002,6 +13040,7 @@ export namespace Prisma {
     slotIndex: number
     status?: $Enums.ApplicationStatus
     createdAt?: Date | string
+    role: string
   }
 
   export type ApplicationUpdateWithoutProjectInput = {
@@ -13009,6 +13048,7 @@ export namespace Prisma {
     slotIndex?: IntFieldUpdateOperationsInput | number
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: StringFieldUpdateOperationsInput | string
     user?: UserUpdateOneRequiredWithoutApplicationsNestedInput
   }
 
@@ -13018,6 +13058,7 @@ export namespace Prisma {
     slotIndex?: IntFieldUpdateOperationsInput | number
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: StringFieldUpdateOperationsInput | string
   }
 
   export type ApplicationUncheckedUpdateManyWithoutProjectInput = {
@@ -13026,6 +13067,7 @@ export namespace Prisma {
     slotIndex?: IntFieldUpdateOperationsInput | number
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: StringFieldUpdateOperationsInput | string
   }
 
 

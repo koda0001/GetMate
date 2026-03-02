@@ -120,37 +120,35 @@ export async function deleteProject(formData: FormData) {
 }
 
 // Recruitment: User applies for a slot (creates Application with PENDING status)
-export async function joinProject(projectId: string, slotIndex: number) {
+export async function joinProject(projectId: string, slotIndex: number, role: string) {
   const session = await auth();
   if (!session) throw new Error("Log in first!");
-  
   const project = await db.project.findUnique({
     where: { id: projectId },
-    include: { applications: true }
+    include: { applications: true, roleDefinitions: true, subscribers: true }
   });
   if (!project) throw new Error("Project not found");
-  
-  // Check if user already applied for this slot
+  // Check if user already applied for this slot and role
   const existingApp = await db.application.findFirst({
     where: {
       userId: session.user.id,
       projectId,
       slotIndex,
+      role,
       status: { in: ["PENDING", "ACCEPTED"] }
     }
   });
   if (existingApp) throw new Error("You already applied for this slot!");
-  
   // Check if slot is already filled
   if (project.subscribers[slotIndex] && project.subscribers[slotIndex].trim() !== "") {
     throw new Error("Slot already taken!");
   }
-
   await db.application.create({
     data: {
       userId: session.user.id,
       projectId,
       slotIndex,
+      role,
       status: "PENDING"
     }
   });
@@ -158,27 +156,29 @@ export async function joinProject(projectId: string, slotIndex: number) {
 }
 
 // Recruitment: Owner accepts an application
-export async function acceptApplication(applicationId: any) {
+export async function acceptApplication(formData: FormData) {
   const session = await auth();
   if (!session) throw new Error("Log in first!");
-  
+  const applicationId = formData.get("applicationId") as string;
   const application = await db.application.findUnique({
     where: { id: applicationId },
     include: { project: true }
   });
   if (!application) throw new Error("Application not found");
   if (application.project.authorId !== session.user.id) throw new Error("Not your project!");
-  
-  // Check if slot is already filled
+  // Find first empty slot for the role
   const project = application.project;
-  if (project.subscribers[application.slotIndex]?.trim() !== "") {
-    throw new Error("Slot already taken!");
+  const role = application.role;
+  let slotToFill = -1;
+  for (let i = 0; i < project.roleDefinitions.length; i++) {
+    if (project.roleDefinitions[i] === role && (!project.subscribers[i] || project.subscribers[i].trim() === "")) {
+      slotToFill = i;
+      break;
+    }
   }
-  
-  // Accept application: update project.subscribers and application status
+  if (slotToFill === -1) throw new Error("No empty slot for this role!");
   const newSubscribers = [...project.subscribers];
-  newSubscribers[application.slotIndex] = application.userId;
-  
+  newSubscribers[slotToFill] = application.userId;
   await db.$transaction([
     db.project.update({
       where: { id: project.id },
@@ -186,12 +186,12 @@ export async function acceptApplication(applicationId: any) {
     }),
     db.application.update({
       where: { id: applicationId },
-      data: { status: "ACCEPTED" }
+      data: { status: "ACCEPTED", slotIndex: slotToFill }
     }),
     db.application.updateMany({
       where: {
         projectId: project.id,
-        slotIndex: application.slotIndex,
+        slotIndex: slotToFill,
         status: "PENDING",
         id: { not: applicationId }
       },

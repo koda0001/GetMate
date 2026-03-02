@@ -53,9 +53,9 @@ export function SlotsGrid({ project, mode = 'edit', onJoin }: { project: any, mo
             disabled={!isLoggedIn}
           />
           {!isLoggedIn && (
-            <div className="mt-2 text-xs text-[#30364F] font-mono bg-[#E1D9BC] border-2 border-[#30364F] rounded-sm px-2 py-1 shadow-[2px_2px_0_#30364F]">
-              Sign in to edit slots
-            </div>
+              <div className="ml-2 text-xs text-[#30364F] font-mono bg-[#E1D9BC] border-2 border-[#30364F] rounded-sm px-2 py-1 shadow-[2px_2px_0_#30364F]">
+                Sign in to participate
+              </div>
           )}
         </div>
       ) : null}
@@ -104,12 +104,28 @@ export function SlotsGrid({ project, mode = 'edit', onJoin }: { project: any, mo
                     <span className="font-bold text-[#30364F]">{subscriber}</span>
                   </div>
                 ) : (
-                  <button
-                    className="ml-2 px-3 py-1 font-bold text-[#30364F] bg-[#E1D9BC] border-2 border-[#30364F] rounded shadow-[2px_2px_0_#30364F] hover:bg-[#F7E9A0] transition"
-                    onClick={() => onJoin && onJoin(i, role)}
-                  >
-                    Join as {role}
-                  </button>
+                  isLoggedIn ? (
+                    <button
+                      className="ml-2 px-3 py-1 font-bold text-[#30364F] bg-[#E1D9BC] border-2 border-[#30364F] rounded shadow-[2px_2px_0_#30364F] hover:bg-[#F7E9A0] transition"
+                      onClick={() => onJoin && onJoin(i, role)}
+                    >
+                      Join as {role}
+                    </button>
+                  ) : (
+                    <div className="relative group">
+                      <button
+                        className="ml-2 px-3 py-1 font-bold text-[#30364F] bg-[#E1D9BC] border-2 border-[#30364F] rounded shadow-[2px_2px_0_#30364F] opacity-50 cursor-not-allowed"
+                        disabled
+                      >
+                        Join as {role}
+                      </button>
+                      <div className="absolute left-1/2 -translate-x-1/2 top-10 z-20 hidden group-hover:block">
+                        <div className="bg-[#30364F] text-[#E1D9BC] px-3 py-1 rounded-sm border-2 border-[#30364F] font-mono text-xs shadow-lg">
+                          Sign in to participate
+                        </div>
+                      </div>
+                    </div>
+                  )
                 )}
               </div>
             );

@@ -191,7 +191,8 @@ exports.Prisma.ApplicationScalarFieldEnum = {
   projectId: 'projectId',
   slotIndex: 'slotIndex',
   status: 'status',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  role: 'role'
 };
 
 exports.Prisma.SortOrder = {
