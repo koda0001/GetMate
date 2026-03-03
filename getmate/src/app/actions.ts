@@ -125,7 +125,7 @@ export async function joinProject(projectId: string, slotIndex: number, role: st
   if (!session) throw new Error("Log in first!");
   const project = await db.project.findUnique({
     where: { id: projectId },
-    include: { applications: true, roleDefinitions: true, subscribers: true }
+    include: { applications: true }
   });
   if (!project) throw new Error("Project not found");
   // Check if user already applied for this slot and role
@@ -202,10 +202,10 @@ export async function acceptApplication(formData: FormData) {
 }
 
 // Recruitment: Owner rejects an application
-export async function rejectApplication(applicationId: any) {
+export async function rejectApplication(formData: FormData) {
   const session = await auth();
   if (!session) throw new Error("Log in first!");
-  
+  const applicationId = formData.get("applicationId") as string;
   const application = await db.application.findUnique({
     where: { id: applicationId },
     include: { project: true }

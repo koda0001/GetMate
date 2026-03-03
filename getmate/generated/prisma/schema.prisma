@@ -100,7 +100,7 @@ model Project {
   id              String          @id @default(cuid())
   title           String
   description     String
-  slots           Int
+  slots           Int             @default(1)
   subscribers     String[] // user IDs
   roleDefinitions String[]
   private         Boolean         @default(false)
@@ -120,13 +120,14 @@ model Project {
 
 model Application {
   id        String            @id @default(cuid())
-  user      User              @relation(fields: [userId], references: [id])
+  user      User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
-  project   Project           @relation(fields: [projectId], references: [id])
+  project   Project           @relation(fields: [projectId], references: [id], onDelete: Cascade)
   projectId String
   slotIndex Int
   status    ApplicationStatus @default(PENDING)
   createdAt DateTime          @default(now())
+  role      String
 
   @@unique([userId, projectId, slotIndex])
 }

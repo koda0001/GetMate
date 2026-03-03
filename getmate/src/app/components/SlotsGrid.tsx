@@ -1,15 +1,26 @@
 'use client';
 import { useState } from "react";
 import { useSession } from "next-auth/react";
+import { joinProject } from "../actions";
+import { useRouter } from "next/navigation";
 
-export function SlotsGrid({ project, mode = 'edit', onJoin }: { project: any, mode?: 'edit' | 'view', onJoin?: (slotIndex: number, role: string) => void }) {
+
+export function SlotsGrid({ 
+  project, 
+  mode = 'edit',
+  subscriberNames = {},
+  }: { 
+  project: any,
+  mode?: 'edit' | 'view',
+  subscriberNames?: Record<string, string>
+  }) {
   const ROLE_OPTIONS = [
     "Programmer",
     "Graphic Designer",
     "Project Manager"
   ];
   const [slotsCount, setSlotsCount] = useState(project?.slots || 1);
-  const [sixSlots, setSixSlots] = useState(slotsCount > 5);
+  const router = useRouter();
   const [roleDefinitions, setRoleDefinitions] = useState<string[]>(
     project?.roleDefinitions ?? Array(slotsCount).fill(ROLE_OPTIONS[0])
   );
@@ -20,7 +31,6 @@ export function SlotsGrid({ project, mode = 'edit', onJoin }: { project: any, mo
   const handleSlotsChange = (value: string) => {
     const num = parseInt(value) || 1;
     setSlotsCount(num);
-    setSixSlots(num > 5);
     setRoleDefinitions((prev) => {
       const arr = [...prev];
       arr.length = num;
@@ -35,6 +45,16 @@ export function SlotsGrid({ project, mode = 'edit', onJoin }: { project: any, mo
       arr[i] = value;
       return arr;
     });
+  };
+
+  const handleJoin = (slotIndex: number, role :string) => {
+    try {
+      await joinProject(project.id, slotIndex, role);
+      alert("Dołączono do projektu!");
+      router.refresh();
+    } catch (err: any) {
+      alert(err.message);
+    }
   };
 
   return (
@@ -62,18 +82,16 @@ export function SlotsGrid({ project, mode = 'edit', onJoin }: { project: any, mo
       <div className="grid gap-4 transition-all duration-300 grid-cols-1">
         {Array.from({ length: slotsCount }).map((_, i) => {
           const subscriber = project.subscribers?.[i];
+          const subscriberId = project.subscribers?.[i]; // To jest ID (string)
           const role = roleDefinitions[i] || ROLE_OPTIONS[0];
+          const subscriberName = subscriberId ? subscriberNames[subscriberId] : null;
           if (isEdit) {
             return (
               <div key={i} className="flex gap-2 items-center animate-in fade-in slide-in-from-left-2 duration-200">
                 <label className="text-xs font-bold text-gray-400">Slot #{i + 1}</label>
-                <input
-                  name="slot_description"
-                  placeholder={`Opis dla slotu ${i + 1}`}
-                  defaultValue={subscriber || ""}
-                  className="flex-1 p-2 border rounded"
-                  disabled={!isLoggedIn}
-                />
+                <div className="flex-1 px-2 py-1 border rounded bg-[#E1D9BC] text-sm font-mono text-[#30364F]">
+                  {subscriberName || "Empty slot"}
+                </div>
                 <select
                   name="slot_role"
                   value={role}
@@ -107,7 +125,7 @@ export function SlotsGrid({ project, mode = 'edit', onJoin }: { project: any, mo
                   isLoggedIn ? (
                     <button
                       className="ml-2 px-3 py-1 font-bold text-[#30364F] bg-[#E1D9BC] border-2 border-[#30364F] rounded shadow-[2px_2px_0_#30364F] hover:bg-[#F7E9A0] transition"
-                      onClick={() => onJoin && onJoin(i, role)}
+                      onClick={e => { e.stopPropagation(); handleJoin(i, role); }}
                     >
                       Join as {role}
                     </button>

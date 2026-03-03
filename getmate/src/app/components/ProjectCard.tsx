@@ -12,9 +12,9 @@ export function ProjectCard({ project, currentUserId }: { project: any, currentU
   const { data: session } = useSession();
   const isLoggedIn = !!session?.user;
   const isAuthor = isLoggedIn && session.user.id === project.authorId;
-  const handleJoin = async (slotIndex: number) => {
+  const handleJoin = async (slotIndex: number, role :string) => {
     try {
-      await joinProject(project.id, slotIndex);
+      await joinProject(project.id, slotIndex, role);
       alert("Dołączono do projektu!");
       router.refresh();
     } catch (err: any) {
@@ -76,7 +76,7 @@ export function ProjectCard({ project, currentUserId }: { project: any, currentU
               </div>
             );
           }
-          // Logged in, not author: show Join
+          // Logged in, not author: show Join button
           if (isLoggedIn) {
             return (
               <div key={i} className="flex items-center gap-2 border-2 border-[#30364F] rounded-sm bg-[#F0F0DB] px-2 py-1 font-mono">
@@ -90,7 +90,7 @@ export function ProjectCard({ project, currentUserId }: { project: any, currentU
                   <button
                     className="ml-auto px-3 py-1 bg-[#E1D9BC] border-2 border-[#30364F] rounded-sm shadow-[4px_4px_0_#30364F] font-bold active:translate-y-1 active:shadow-none"
                     disabled={!!userId || isSubscribed}
-                    onClick={e => { e.stopPropagation(); handleJoin(i); }}
+                    onClick={e => { e.stopPropagation(); handleJoin(i, role); }}
                   >
                     Join as {role}
                   </button>

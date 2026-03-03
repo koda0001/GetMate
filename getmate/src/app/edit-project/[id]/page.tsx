@@ -23,6 +23,13 @@ export default async function EditProjectPage({ params }: { params: { id: string
   const session = await auth();
   const isOwner = session?.user?.id === project.authorId;
 
+  const subscriberNames: Record<string, string> = {};
+  project.applications.forEach(app => {
+    if (app.status === "ACCEPTED" && app.user) {
+      subscriberNames[app.userId] = app.user.name || "Unknown";
+    }
+  });
+
   return (
     <main className="p-8 max-w-2xl mx-auto">
       {/* Badge Autora */}
@@ -71,7 +78,7 @@ export default async function EditProjectPage({ params }: { params: { id: string
           
           <div className="space-y-2">
              <label className="text-xs font-bold uppercase text-[#30364F]">Team Slots</label>
-             <SlotsGrid project={project} mode="edit" />
+             <SlotsGrid project={project} mode="edit" subscriberNames={subscriberNames}/>
           </div>
           
           <div className="flex items-center gap-3 p-4 bg-white border-2 border-[#30364F] shadow-[4px_4px_0_#30364F]">
@@ -111,7 +118,7 @@ export default async function EditProjectPage({ params }: { params: { id: string
 
           <div className="space-y-3">
             <h3 className="text-xs font-bold uppercase text-[#30364F] tracking-widest px-1">Current Openings</h3>
-            <SlotsGrid project={project} mode="view" />
+            <SlotsGrid project={project} mode="view" subscriberNames={subscriberNames}/>
           </div>
         </div>
       )}

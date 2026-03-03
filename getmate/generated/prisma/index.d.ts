@@ -10550,7 +10550,7 @@ export namespace Prisma {
     id?: string
     title: string
     description: string
-    slots: number
+    slots?: number
     subscribers?: ProjectCreatesubscribersInput | string[]
     roleDefinitions?: ProjectCreateroleDefinitionsInput | string[]
     private?: boolean
@@ -10569,7 +10569,7 @@ export namespace Prisma {
     id?: string
     title: string
     description: string
-    slots: number
+    slots?: number
     subscribers?: ProjectCreatesubscribersInput | string[]
     roleDefinitions?: ProjectCreateroleDefinitionsInput | string[]
     private?: boolean
@@ -10626,7 +10626,7 @@ export namespace Prisma {
     id?: string
     title: string
     description: string
-    slots: number
+    slots?: number
     subscribers?: ProjectCreatesubscribersInput | string[]
     roleDefinitions?: ProjectCreateroleDefinitionsInput | string[]
     private?: boolean
@@ -12337,7 +12337,7 @@ export namespace Prisma {
     id?: string
     title: string
     description: string
-    slots: number
+    slots?: number
     subscribers?: ProjectCreatesubscribersInput | string[]
     roleDefinitions?: ProjectCreateroleDefinitionsInput | string[]
     private?: boolean
@@ -12355,7 +12355,7 @@ export namespace Prisma {
     id?: string
     title: string
     description: string
-    slots: number
+    slots?: number
     subscribers?: ProjectCreatesubscribersInput | string[]
     roleDefinitions?: ProjectCreateroleDefinitionsInput | string[]
     private?: boolean
@@ -12692,7 +12692,7 @@ export namespace Prisma {
     id?: string
     title: string
     description: string
-    slots: number
+    slots?: number
     subscribers?: ProjectCreatesubscribersInput | string[]
     roleDefinitions?: ProjectCreateroleDefinitionsInput | string[]
     private?: boolean
@@ -12710,7 +12710,7 @@ export namespace Prisma {
     id?: string
     title: string
     description: string
-    slots: number
+    slots?: number
     subscribers?: ProjectCreatesubscribersInput | string[]
     roleDefinitions?: ProjectCreateroleDefinitionsInput | string[]
     private?: boolean
@@ -12858,7 +12858,7 @@ export namespace Prisma {
     id?: string
     title: string
     description: string
-    slots: number
+    slots?: number
     subscribers?: ProjectCreatesubscribersInput | string[]
     roleDefinitions?: ProjectCreateroleDefinitionsInput | string[]
     private?: boolean
