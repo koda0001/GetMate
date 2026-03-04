@@ -8,13 +8,18 @@ import { ProjectCard } from "@/app/components/ProjectCard";
 import { TechStackSelector } from "@/app/components/TechStackSelector";
 import React from "react";
 
-export default async function ProfilePage({ params }: { params: { id: string } }) {
+// POPRAWKA: params jako Promise
+export default async function ProfilePage(props: { params: Promise<{ id: string }> }) {
+  // POPRAWKA: awaitowanie parametrów
+  const params = await props.params;
+  const userIdFromParams = params.id;
+
   const session = await auth();
-  const isMe = session?.user?.id === params.id;
+  const isMe = session?.user?.id === userIdFromParams;
   const STATUSES = ["Available", "Looking for projects", "Busy", "Not looking"];
 
   const user = await db.user.findUnique({
-    where: { id: params.id },
+    where: { id: userIdFromParams },
     include: {
       projects: true,
       accounts: true,
@@ -42,13 +47,12 @@ export default async function ProfilePage({ params }: { params: { id: string } }
       ? Math.round((completedCount / user.projects.length) * 100)
       : 0;
 
-  // Social links (assuming user.accounts has provider info)
-  const github = user.accounts?.find((a: any) => a.provider === "github")?.providerAccountId
-    ? `https://github.com/${user.accounts.find((a: any) => a.provider === "github").providerAccountId}`
-    : null;
-  const linkedin = user.accounts?.find((a: any) => a.provider === "linkedin")?.providerAccountId
-    ? `https://linkedin.com/in/${user.accounts.find((a: any) => a.provider === "linkedin").providerAccountId}`
-    : null;
+  // Social links
+  const githubAccount = user.accounts?.find((a: any) => a.provider === "github");
+  const github = githubAccount ? `https://github.com/${githubAccount.providerAccountId}` : null;
+
+  const linkedinAccount = user.accounts?.find((a: any) => a.provider === "linkedin");
+  const linkedin = linkedinAccount ? `https://linkedin.com/in/${linkedinAccount.providerAccountId}` : null;
 
   return (
     <main className="p-8 max-w-3xl mx-auto font-mono">
@@ -98,7 +102,6 @@ export default async function ProfilePage({ params }: { params: { id: string } }
                   <option key={status} value={status}>{status}</option>
                 ))}
               </select>
-              <input type="hidden" name="availability" value={user.availability} />
             </div>
             <input type="hidden" name="userId" value={user.id} />
             <textarea

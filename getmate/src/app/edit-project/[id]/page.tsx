@@ -8,10 +8,15 @@ import { SlotsGrid } from "@/app/components/SlotsGrid";
 import Link from "next/link";
 import { TechStackSelector } from "@/app/components/TechStackSelector";
 
-export default async function EditProjectPage({ params }: { params: { id: string } }) {
-  // Pobieramy dane projektu wraz z autorem
+// POPRAWKA: params jest teraz Promise
+export default async function EditProjectPage(props: { params: Promise<{ id: string }> }) {
+  // POPRAWKA: musimy poczekać na params
+  const params = await props.params;
+  const projectId = params.id;
+
+  // Pobieramy dane projektu wraz z autorem używając wyciągniętego projectId
   const project = await db.project.findUnique({
-    where: { id: params.id },
+    where: { id: projectId },
     include: {
       author: true,
       applications: { include: { user: true } },
