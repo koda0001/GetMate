@@ -36,7 +36,7 @@ export async function ActivityFeed({ projects }: { projects: any[] }) {
 
   return (
     <div className="border-2 border-[#30364F] bg-[#F0F0DB] rounded-sm p-4 shadow-[4px_4px_0_#30364F]">
-      <div className="font-mono text-xs font-bold mb-2 text-[#30364F]">Activity Feed</div>
+      <div className="font-black tracking-tighter text-sm uppercase text-[#30364F]">Activity_Feed</div>
       <ul className="space-y-2">
         {activities.slice(0, 8).map((act, idx) => (
           <li

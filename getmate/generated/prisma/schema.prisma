@@ -53,11 +53,11 @@ model Session {
 }
 
 model User {
-  id            String        @id @default(cuid())
+  id            String         @id @default(cuid())
   name          String?
-  email         String?       @unique
+  email         String?        @unique
   applications  Application[]
-  availability  String        @default("Available")
+  availability  String         @default("Available")
   emailVerified DateTime?
   image         String?
   accounts      Account[]
@@ -66,6 +66,7 @@ model User {
   posts         Post[]
   techStack     String[]
   projects      Project[]
+  notifications Notification[]
 }
 
 model VerificationToken {
@@ -100,7 +101,7 @@ model Project {
   id              String          @id @default(cuid())
   title           String
   description     String
-  slots           Int             @default(1)
+  slots           Int
   subscribers     String[] // user IDs
   roleDefinitions String[]
   private         Boolean         @default(false)
@@ -130,4 +131,17 @@ model Application {
   role      String
 
   @@unique([userId, projectId, slotIndex])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String // ID adresata (usera, który ma to zobaczyć)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String // np. "New Applicant!"
+  message   String // np. "Marek wants to join your project: AI Bot"
+  link      String? // opcjonalnie: link do kliknięcia (np. /edit-project/123)
+  read      Boolean  @default(false) // czy user już to kliknął?
+  createdAt DateTime @default(now())
+
+  @@index([userId]) // Indeks przyspiesza wyszukiwanie powiadomień dla konkretnego usera
 }

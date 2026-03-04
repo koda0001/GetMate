@@ -195,6 +195,16 @@ exports.Prisma.ApplicationScalarFieldEnum = {
   role: 'role'
 };
 
+exports.Prisma.NotificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  title: 'title',
+  message: 'message',
+  link: 'link',
+  read: 'read',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -236,7 +246,8 @@ exports.Prisma.ModelName = {
   User: 'User',
   VerificationToken: 'VerificationToken',
   Project: 'Project',
-  Application: 'Application'
+  Application: 'Application',
+  Notification: 'Notification'
 };
 
 /**

@@ -27,6 +27,15 @@ export function SlotsGrid({
   const { data: session } = useSession();
   const isLoggedIn = !!session?.user;
   const isEdit = mode === 'edit';
+  const handleJoin = async (slotIndex: number, role :string) => {
+    try {
+      await joinProject(project.id, slotIndex, role);
+      alert("Dołączono do projektu!");
+      router.refresh();
+    } catch (err: any) {
+      alert(err.message);
+    }
+  };
 
   const handleSlotsChange = (value: string) => {
     const num = parseInt(value) || 1;
@@ -47,15 +56,6 @@ export function SlotsGrid({
     });
   };
 
-  const handleJoin = (slotIndex: number, role :string) => {
-    try {
-      await joinProject(project.id, slotIndex, role);
-      alert("Dołączono do projektu!");
-      router.refresh();
-    } catch (err: any) {
-      alert(err.message);
-    }
-  };
 
   return (
     <div className="space-y-4">
@@ -119,7 +119,7 @@ export function SlotsGrid({
                   <div className="flex items-center gap-2">
                     {/* Replace with user avatar/name if available */}
                     <div className="w-8 h-8 rounded-full bg-gray-300 border-2 border-[#30364F]" />
-                    <span className="font-bold text-[#30364F]">{subscriber}</span>
+                    <span className="font-bold text-[#30364F]">{subscriberName}</span>
                   </div>
                 ) : (
                   isLoggedIn ? (

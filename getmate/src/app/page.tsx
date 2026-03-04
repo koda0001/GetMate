@@ -3,7 +3,7 @@ import { db } from "@/server/db";
 import Link from "next/link";
 import { ProjectCard } from "./components/ProjectCard";
 import { ActivityFeed } from "./components/ActivityFeed";
-import { FilterToolbar } from "./components/FilterToolbar";
+import { NotificationsBox } from "./components/NotificationsBox";
 
 
 
@@ -46,6 +46,7 @@ export default async function HomePage() {
         </div>
         <aside className="md:col-span-1">
           <ActivityFeed projects={projectsWithUsers} />
+          <NotificationsBox /> {/* Dodajemy komponent powiadomień */}
         </aside>
       </div>
     </main>

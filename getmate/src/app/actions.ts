@@ -135,7 +135,7 @@ export async function joinProject(projectId: string, slotIndex: number, role: st
       projectId,
       slotIndex,
       role,
-      status: { in: ["PENDING", "ACCEPTED"] }
+      status: { in: ["PENDING", "ACCEPTED","REJECTED"] }
     }
   });
   if (existingApp) throw new Error("You already applied for this slot!");
@@ -152,6 +152,14 @@ export async function joinProject(projectId: string, slotIndex: number, role: st
       status: "PENDING"
     }
   });
+  await db.notification.create({
+    data: {
+      userId: project.authorId, // powiadomienie leci do właściciela
+      title: "New Application",
+      message: `${session.user.name} applied for ${role} in ${project.title}`,
+      link: `/edit-project/${project.id}`,
+    }
+});
   revalidatePath("/");
 }
 
@@ -198,6 +206,14 @@ export async function acceptApplication(formData: FormData) {
       data: { status: "REJECTED" }
     })
   ]);
+  await db.notification.create({
+    data: {
+      userId: application.userId, // powiadomienie leci do aplikanta
+      title: "Accepted",
+      message: `You where accepted for ${role} in ${project.title}`,
+      link: `/edit-project/${project.id}`,
+  }
+  });
   revalidatePath("/");
 }
 
@@ -216,6 +232,14 @@ export async function rejectApplication(formData: FormData) {
   await db.application.update({
     where: { id: applicationId },
     data: { status: "REJECTED" }
+  });
+  await db.notification.create({
+    data: {
+      userId: application.userId, // powiadomienie leci do aplikanta
+      title: "Rejected",
+      message: `You where rejected from ${role} in ${project.title}`,
+      link: `/edit-project/${project.id}`,
+  }
   });
   revalidatePath("/");
 }
@@ -246,4 +270,12 @@ export async function updateProfile(formData: FormData) {
   // tu trzeba jakis wait czy cos bo update leci w serwer ale strona sie za szybko updatuje i przez to 
   //nie widac zmian w tym polu wyboru, ale jak sie juz odwiezy strone to zmiany sie pokazujo
   revalidatePath(`/profile/${userId}`);
+}
+
+export async function markNotificationAsRead(id: string) {
+  await db.notification.update({
+    where: { id },
+    data: { read: true },
+  });
+  revalidatePath("/"); // Odświeża dane w komponentach Server Components
 }
