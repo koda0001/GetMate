@@ -3,15 +3,35 @@ import { auth } from "@/server/auth";
 import { SlotsGrid } from "@/app/components/SlotsGrid";
 import Link from "next/link";
 
-export default async function ProjectPage({ params }: { params: { id: string } }) {
+// POPRAWKA: Definicja params jako Promise
+export default async function ProjectPage(props: { params: Promise<{ id: string }> }) {
+  // POPRAWKA: awaitowanie parametrów
+  const params = await props.params;
+  const projectId = params.id;
+
   const project = await db.project.findUnique({
-    where: { id: params.id },
-    include: { author: true },
+    where: { id: projectId },
+    include: { 
+      author: true,
+      // Dodajemy include, żeby SlotsGrid widział imiona osób, które już dołączyły
+      applications: {
+        include: { user: true }
+      }
+    },
   });
+
   if (!project) return <div>Project not found</div>;
 
   const session = await auth();
   const isOwner = session?.user?.id === project.authorId;
+
+  // Przygotowanie mapy imion dla SlotsGrid (tak jak w EditProjectPage)
+  const subscriberNames: Record<string, string> = {};
+  project.applications?.forEach(app => {
+    if (app.status === "ACCEPTED" && app.user) {
+      subscriberNames[app.userId] = app.user.name || "Unknown";
+    }
+  });
 
   return (
     <main className="p-8 max-w-2xl mx-auto">
@@ -33,38 +53,49 @@ export default async function ProjectPage({ params }: { params: { id: string } }
           {project.status}
         </span>
       </div>
-      <h1 className="text-2xl font-bold mb-6">{project.title}</h1>
-      <Link href="/" className="text-sm text-gray-500 hover:underline mb-8 block">
+      <h1 className="text-2xl font-bold mb-6 text-[#30364F]">{project.title}</h1>
+      <Link href="/" className="text-sm text-gray-500 hover:underline mb-8 block font-mono">
         ← Back to home
       </Link>
       {(project.github || project.link) && (
-        <div className="mb-4">
+        <div className="mb-6 space-y-1">
           <h3 className="font-bold text-xs uppercase text-[#30364F]">Project Links</h3>
           {project.github && (
-            <a href={project.github} target="_blank" rel="noopener" className="block underline text-blue-700">GitHub</a>
+            <a href={project.github} target="_blank" rel="noopener" className="block underline text-blue-700 text-sm">GitHub</a>
           )}
           {project.link && (
-            <a href={project.link} target="_blank" rel="noopener" className="block underline text-blue-700">Discord/Other</a>
+            <a href={project.link} target="_blank" rel="noopener" className="block underline text-blue-700 text-sm">Discord/Other</a>
           )}
         </div>
       )}
+
       {isOwner ? (
-        <form action="/api/updateProject" className="space-y-4">
-          <input type="hidden" name="projectId" value={project.id} />
-          <input name="title" defaultValue={project.title} className="w-full p-2 border rounded" />
-          <textarea name="description" defaultValue={project.description} className="w-full p-2 border rounded h-32" />
-          {/* Add other editable fields as needed */}
-          <SlotsGrid project={project} mode="edit" />
-          {/* Add SubmitButton, DeleteButton, etc. */}
-        </form>
+        /* Jeśli owner trafi tutaj, dajemy mu szybki link do edycji lub prosty form */
+        <div className="space-y-4">
+            <div className="p-4 bg-[#F0F0DB] border-2 border-dashed border-[#30364F] text-center mb-4">
+                <p className="text-xs font-bold uppercase mb-2">You are the owner of this project</p>
+                <Link 
+                    href={`/edit-project/${project.id}`}
+                    className="inline-block bg-[#30364F] text-white px-4 py-2 text-sm font-bold shadow-[4px_4px_0_#E1D9BC]"
+                >
+                    GO TO SETTINGS
+                </Link>
+            </div>
+            <div className="space-y-4 opacity-50 pointer-events-none">
+                <SlotsGrid project={project} mode="view" subscriberNames={subscriberNames} />
+            </div>
+        </div>
       ) : (
         <div className="space-y-4">
-          <div className="w-full p-2 border-2 border-[#30364F] rounded bg-[#E1D9BC] font-mono text-[#30364F]">
-            <div className="mb-2 font-bold">Description:</div>
-            <div>{project.description}</div>
+          <div className="w-full p-6 border-2 border-[#30364F] rounded-none bg-[#E1D9BC] font-mono text-[#30364F] shadow-[4px_4px_0_#30364F]">
+            <div className="mb-2 font-bold uppercase text-xs border-b border-[#30364F] pb-1">// Description</div>
+            <div className="whitespace-pre-wrap">{project.description}</div>
           </div>
-          {/* Add other read-only fields as needed */}
-          <SlotsGrid project={project} mode="view" />
+          
+          <div className="pt-4">
+             <h3 className="font-bold text-xs uppercase text-[#30364F] mb-3">Team Status</h3>
+             <SlotsGrid project={project} mode="view" subscriberNames={subscriberNames} />
+          </div>
         </div>
       )}
     </main>
