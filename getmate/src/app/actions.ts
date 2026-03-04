@@ -179,8 +179,7 @@ export async function acceptApplication(formData: FormData) {
   const role = application.role;
   let slotToFill = -1;
   for (let i = 0; i < project.roleDefinitions.length; i++) {
-    if (project.roleDefinitions[i] === role && (!project.subscribers[i] || project.subscribers[i].trim() === "")) {
-      slotToFill = i;
+      if (project.roleDefinitions[i] === role && (!project.subscribers[i] || project.subscribers[i]?.trim() === "")) {      slotToFill = i;
       break;
     }
   }
@@ -226,6 +225,7 @@ export async function rejectApplication(formData: FormData) {
     where: { id: applicationId },
     include: { project: true }
   });
+  
   if (!application) throw new Error("Application not found");
   if (application.project.authorId !== session.user.id) throw new Error("Not your project!");
   
@@ -233,17 +233,18 @@ export async function rejectApplication(formData: FormData) {
     where: { id: applicationId },
     data: { status: "REJECTED" }
   });
+
   await db.notification.create({
     data: {
-      userId: application.userId, // powiadomienie leci do aplikanta
+      userId: application.userId,
       title: "Rejected",
-      message: `You where rejected from ${role} in ${project.title}`,
-      link: `/edit-project/${project.id}`,
-  }
+      // POPRAWKA: używamy danych z obiektu application
+      message: `You were rejected from ${application.role} in ${application.project.title}`,
+      link: `/edit-project/${application.project.id}`,
+    }
   });
   revalidatePath("/");
 }
-
 // Update user profile (bio, social links, etc.)
 export async function updateProfile(formData: FormData) {
   const session = await auth();
