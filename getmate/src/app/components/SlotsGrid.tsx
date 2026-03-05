@@ -22,7 +22,9 @@ export function SlotsGrid({
   const [slotsCount, setSlotsCount] = useState(project?.slots || 1);
   const router = useRouter();
   const [roleDefinitions, setRoleDefinitions] = useState<string[]>(
-    project?.roleDefinitions ?? Array(slotsCount).fill(ROLE_OPTIONS[0])
+    project?.roleDefinitions?.length > 0 
+      ? [...project.roleDefinitions] 
+      : Array.from({ length: slotsCount }, () => ROLE_OPTIONS[0])
   );
   const { data: session } = useSession();
   const isLoggedIn = !!session?.user;
@@ -37,14 +39,22 @@ export function SlotsGrid({
     }
   };
 
-  const handleSlotsChange = (value: string) => {
+const handleSlotsChange = (value: string) => {
     const num = parseInt(value) || 1;
     setSlotsCount(num);
-    setRoleDefinitions((prev) => {
-      const arr = [...prev];
-      arr.length = num;
-      for (let i = 0; i < num; i++) arr[i] = arr[i] || ROLE_OPTIONS[0];
-      return arr;
+    
+    setRoleDefinitions((prev: string[]) => {
+      // 1. Tworzymy nową, pustą tablicę o rozmiarze 'num'
+      const nextRoles: string[] = [];
+      
+      // 2. Wypełniamy ją ręcznie, gwarantując TS-owi, że każdy element to string
+      for (let i = 0; i < num; i++) {
+        const existingRole = prev[i];
+        // Jeśli rola istnieje, bierzemy ją, jeśli nie - bierzemy domyślną
+        nextRoles.push(existingRole ?? ROLE_OPTIONS[0] ?? "Programmer");
+      }
+      
+      return nextRoles;
     });
   };
 
@@ -125,7 +135,7 @@ export function SlotsGrid({
                   isLoggedIn ? (
                     <button
                       className="ml-2 px-3 py-1 font-bold text-[#30364F] bg-[#E1D9BC] border-2 border-[#30364F] rounded shadow-[2px_2px_0_#30364F] hover:bg-[#F7E9A0] transition"
-                      onClick={e => { e.stopPropagation(); handleJoin(i, role); }}
+                      onClick={e => { e.stopPropagation(); handleJoin(i, role ?? "Programmer"); }}
                     >
                       Join as {role}
                     </button>
