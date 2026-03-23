@@ -100,6 +100,16 @@ export default async function EditProjectPage(props: { params: Promise<{ id: str
             </label>
           </div>
 
+            <div>
+              <label className="text-sm font-medium">GitHub Repository</label>
+              <input name="github" className="w-full p-2 border rounded" placeholder="https://github.com/..." defaultValue={project.github || ""}/>
+            </div>
+
+            <div>
+              <label className="text-sm font-medium">Discord</label>
+              <input name="discord" className="w-full p-2 border rounded" placeholder="https://discord.gg/..." defaultValue={project.discord || ""}/>
+            </div>
+
           <div className="pt-4">
             <SubmitButton />
           </div>
@@ -125,6 +135,26 @@ export default async function EditProjectPage(props: { params: Promise<{ id: str
             <h3 className="text-xs font-bold uppercase text-[#30364F] tracking-widest px-1">Current Openings</h3>
             <SlotsGrid project={project} mode="view" subscriberNames={subscriberNames}/>
           </div>
+
+          <div>
+            <label className="text-sm font-medium">GitHub Repository</label>
+            <h3 className="w-full p-2 border rounded" >
+              {project.github? (<a href={project.github} className="text-blue-600 underline">{project.github}</a>) : "No link yet :("}
+            </h3>
+          </div>
+
+          <div>
+            <label className="text-sm font-medium">Discord</label>
+            <h3 className="w-full p-2 border rounded" >
+              {project.discord? (<a href={project.discord} className="text-blue-600 underline">{project.discord}</a>) : "No link yet :("}
+            </h3>
+          </div>
+
+          <div className="space-y-3">
+            <h3 className="text-xs font-bold uppercase text-[#30364F] tracking-widest px-1">Current Openings</h3>
+            
+          </div>
+
         </div>
       )}
 

@@ -107,6 +107,7 @@ model Project {
   private        Boolean  @default(false)
   github         String?
   link           String?
+  discord        String?
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt @default(now())
   author         User     @relation(fields: [authorId], references: [id])

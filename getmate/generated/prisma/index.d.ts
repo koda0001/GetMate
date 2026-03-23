@@ -7229,6 +7229,7 @@ export namespace Prisma {
     private: boolean | null
     github: string | null
     link: string | null
+    discord: string | null
     createdAt: Date | null
     updatedAt: Date | null
     authorId: string | null
@@ -7244,6 +7245,7 @@ export namespace Prisma {
     private: boolean | null
     github: string | null
     link: string | null
+    discord: string | null
     createdAt: Date | null
     updatedAt: Date | null
     authorId: string | null
@@ -7261,6 +7263,7 @@ export namespace Prisma {
     private: number
     github: number
     link: number
+    discord: number
     createdAt: number
     updatedAt: number
     authorId: number
@@ -7287,6 +7290,7 @@ export namespace Prisma {
     private?: true
     github?: true
     link?: true
+    discord?: true
     createdAt?: true
     updatedAt?: true
     authorId?: true
@@ -7302,6 +7306,7 @@ export namespace Prisma {
     private?: true
     github?: true
     link?: true
+    discord?: true
     createdAt?: true
     updatedAt?: true
     authorId?: true
@@ -7319,6 +7324,7 @@ export namespace Prisma {
     private?: true
     github?: true
     link?: true
+    discord?: true
     createdAt?: true
     updatedAt?: true
     authorId?: true
@@ -7424,6 +7430,7 @@ export namespace Prisma {
     private: boolean
     github: string | null
     link: string | null
+    discord: string | null
     createdAt: Date
     updatedAt: Date
     authorId: string
@@ -7461,6 +7468,7 @@ export namespace Prisma {
     private?: boolean
     github?: boolean
     link?: boolean
+    discord?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     authorId?: boolean
@@ -7482,6 +7490,7 @@ export namespace Prisma {
     private?: boolean
     github?: boolean
     link?: boolean
+    discord?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     authorId?: boolean
@@ -7501,6 +7510,7 @@ export namespace Prisma {
     private?: boolean
     github?: boolean
     link?: boolean
+    discord?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     authorId?: boolean
@@ -7520,6 +7530,7 @@ export namespace Prisma {
     private?: boolean
     github?: boolean
     link?: boolean
+    discord?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     authorId?: boolean
@@ -7528,7 +7539,7 @@ export namespace Prisma {
     status?: boolean
   }
 
-  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "slots" | "subscribers" | "roleDefinitions" | "private" | "github" | "link" | "createdAt" | "updatedAt" | "authorId" | "techStack" | "category" | "status", ExtArgs["result"]["project"]>
+  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "slots" | "subscribers" | "roleDefinitions" | "private" | "github" | "link" | "discord" | "createdAt" | "updatedAt" | "authorId" | "techStack" | "category" | "status", ExtArgs["result"]["project"]>
   export type ProjectInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     author?: boolean | UserDefaultArgs<ExtArgs>
     applications?: boolean | Project$applicationsArgs<ExtArgs>
@@ -7557,6 +7568,7 @@ export namespace Prisma {
       private: boolean
       github: string | null
       link: string | null
+      discord: string | null
       createdAt: Date
       updatedAt: Date
       authorId: string
@@ -7997,6 +8009,7 @@ export namespace Prisma {
     readonly private: FieldRef<"Project", 'Boolean'>
     readonly github: FieldRef<"Project", 'String'>
     readonly link: FieldRef<"Project", 'String'>
+    readonly discord: FieldRef<"Project", 'String'>
     readonly createdAt: FieldRef<"Project", 'DateTime'>
     readonly updatedAt: FieldRef<"Project", 'DateTime'>
     readonly authorId: FieldRef<"Project", 'String'>
@@ -10736,6 +10749,7 @@ export namespace Prisma {
     private: 'private',
     github: 'github',
     link: 'link',
+    discord: 'discord',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     authorId: 'authorId',
@@ -11256,6 +11270,7 @@ export namespace Prisma {
     private?: BoolFilter<"Project"> | boolean
     github?: StringNullableFilter<"Project"> | string | null
     link?: StringNullableFilter<"Project"> | string | null
+    discord?: StringNullableFilter<"Project"> | string | null
     createdAt?: DateTimeFilter<"Project"> | Date | string
     updatedAt?: DateTimeFilter<"Project"> | Date | string
     authorId?: StringFilter<"Project"> | string
@@ -11276,6 +11291,7 @@ export namespace Prisma {
     private?: SortOrder
     github?: SortOrderInput | SortOrder
     link?: SortOrderInput | SortOrder
+    discord?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     authorId?: SortOrder
@@ -11299,6 +11315,7 @@ export namespace Prisma {
     private?: BoolFilter<"Project"> | boolean
     github?: StringNullableFilter<"Project"> | string | null
     link?: StringNullableFilter<"Project"> | string | null
+    discord?: StringNullableFilter<"Project"> | string | null
     createdAt?: DateTimeFilter<"Project"> | Date | string
     updatedAt?: DateTimeFilter<"Project"> | Date | string
     authorId?: StringFilter<"Project"> | string
@@ -11319,6 +11336,7 @@ export namespace Prisma {
     private?: SortOrder
     github?: SortOrderInput | SortOrder
     link?: SortOrderInput | SortOrder
+    discord?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     authorId?: SortOrder
@@ -11345,6 +11363,7 @@ export namespace Prisma {
     private?: BoolWithAggregatesFilter<"Project"> | boolean
     github?: StringNullableWithAggregatesFilter<"Project"> | string | null
     link?: StringNullableWithAggregatesFilter<"Project"> | string | null
+    discord?: StringNullableWithAggregatesFilter<"Project"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Project"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Project"> | Date | string
     authorId?: StringWithAggregatesFilter<"Project"> | string
@@ -11853,6 +11872,7 @@ export namespace Prisma {
     private?: boolean
     github?: string | null
     link?: string | null
+    discord?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     techStack?: ProjectCreatetechStackInput | string[]
@@ -11872,6 +11892,7 @@ export namespace Prisma {
     private?: boolean
     github?: string | null
     link?: string | null
+    discord?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     authorId: string
@@ -11891,6 +11912,7 @@ export namespace Prisma {
     private?: BoolFieldUpdateOperationsInput | boolean
     github?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
+    discord?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     techStack?: ProjectUpdatetechStackInput | string[]
@@ -11910,6 +11932,7 @@ export namespace Prisma {
     private?: BoolFieldUpdateOperationsInput | boolean
     github?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
+    discord?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     authorId?: StringFieldUpdateOperationsInput | string
@@ -11929,6 +11952,7 @@ export namespace Prisma {
     private?: boolean
     github?: string | null
     link?: string | null
+    discord?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     authorId: string
@@ -11947,6 +11971,7 @@ export namespace Prisma {
     private?: BoolFieldUpdateOperationsInput | boolean
     github?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
+    discord?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     techStack?: ProjectUpdatetechStackInput | string[]
@@ -11964,6 +11989,7 @@ export namespace Prisma {
     private?: BoolFieldUpdateOperationsInput | boolean
     github?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
+    discord?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     authorId?: StringFieldUpdateOperationsInput | string
@@ -12556,6 +12582,7 @@ export namespace Prisma {
     private?: SortOrder
     github?: SortOrder
     link?: SortOrder
+    discord?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     authorId?: SortOrder
@@ -12576,6 +12603,7 @@ export namespace Prisma {
     private?: SortOrder
     github?: SortOrder
     link?: SortOrder
+    discord?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     authorId?: SortOrder
@@ -12591,6 +12619,7 @@ export namespace Prisma {
     private?: SortOrder
     github?: SortOrder
     link?: SortOrder
+    discord?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     authorId?: SortOrder
@@ -13817,6 +13846,7 @@ export namespace Prisma {
     private?: boolean
     github?: string | null
     link?: string | null
+    discord?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     techStack?: ProjectCreatetechStackInput | string[]
@@ -13835,6 +13865,7 @@ export namespace Prisma {
     private?: boolean
     github?: string | null
     link?: string | null
+    discord?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     techStack?: ProjectCreatetechStackInput | string[]
@@ -14027,6 +14058,7 @@ export namespace Prisma {
     private?: BoolFilter<"Project"> | boolean
     github?: StringNullableFilter<"Project"> | string | null
     link?: StringNullableFilter<"Project"> | string | null
+    discord?: StringNullableFilter<"Project"> | string | null
     createdAt?: DateTimeFilter<"Project"> | Date | string
     updatedAt?: DateTimeFilter<"Project"> | Date | string
     authorId?: StringFilter<"Project"> | string
@@ -14235,6 +14267,7 @@ export namespace Prisma {
     private?: boolean
     github?: string | null
     link?: string | null
+    discord?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     techStack?: ProjectCreatetechStackInput | string[]
@@ -14253,6 +14286,7 @@ export namespace Prisma {
     private?: boolean
     github?: string | null
     link?: string | null
+    discord?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     authorId: string
@@ -14330,6 +14364,7 @@ export namespace Prisma {
     private?: BoolFieldUpdateOperationsInput | boolean
     github?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
+    discord?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     techStack?: ProjectUpdatetechStackInput | string[]
@@ -14348,6 +14383,7 @@ export namespace Prisma {
     private?: BoolFieldUpdateOperationsInput | boolean
     github?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
+    discord?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     authorId?: StringFieldUpdateOperationsInput | string
@@ -14483,6 +14519,7 @@ export namespace Prisma {
     private?: boolean
     github?: string | null
     link?: string | null
+    discord?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     techStack?: ProjectCreatetechStackInput | string[]
@@ -14619,6 +14656,7 @@ export namespace Prisma {
     private?: BoolFieldUpdateOperationsInput | boolean
     github?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
+    discord?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     techStack?: ProjectUpdatetechStackInput | string[]
@@ -14637,6 +14675,7 @@ export namespace Prisma {
     private?: BoolFieldUpdateOperationsInput | boolean
     github?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
+    discord?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     techStack?: ProjectUpdatetechStackInput | string[]
@@ -14655,6 +14694,7 @@ export namespace Prisma {
     private?: BoolFieldUpdateOperationsInput | boolean
     github?: NullableStringFieldUpdateOperationsInput | string | null
     link?: NullableStringFieldUpdateOperationsInput | string | null
+    discord?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     techStack?: ProjectUpdatetechStackInput | string[]
