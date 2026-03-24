@@ -29,6 +29,14 @@ export function HeaderNav({ onLogin }: { onLogin: () => void }) {
             >
               My Profile
             </button>
+
+            <button
+              onClick={() => window.location.href = `/users`}
+              className="bg-white border-2 border-[#30364F] text-[#30364F] px-4 py-2 rounded font-bold shadow hover:bg-[#f3f3f3] transition-colors text-center"
+            >
+              Users
+            </button>
+            
             <button
               className="bg-[#30364F] text-[#E1D9BC] px-4 py-2 rounded font-bold shadow hover:bg-[#22253a] transition-colors"
               onClick={() => signOut()}

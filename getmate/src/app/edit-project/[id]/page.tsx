@@ -139,14 +139,14 @@ export default async function EditProjectPage(props: { params: Promise<{ id: str
           <div>
             <label className="text-sm font-medium">GitHub Repository</label>
             <h3 className="w-full p-2 border rounded" >
-              {project.github? (<a href={project.github} className="text-blue-600 underline">{project.github}</a>) : "No link yet :("}
+              {project.github? (<a href={project.github} className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">{project.github}</a>) : "No link yet :("}
             </h3>
           </div>
 
           <div>
             <label className="text-sm font-medium">Discord</label>
             <h3 className="w-full p-2 border rounded" >
-              {project.discord? (<a href={project.discord} className="text-blue-600 underline">{project.discord}</a>) : "No link yet :("}
+              {project.discord? (<a href={project.discord} className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">{project.discord}</a>) : "No link yet :("}
             </h3>
           </div>
 

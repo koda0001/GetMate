@@ -145,14 +145,17 @@ export default async function ProfilePage(props: { params: Promise<{ id: string 
       {/* Projects List */}
       <div>
         <h2 className="font-bold text-[#30364F] mb-2">Projects</h2>
+        
+        {/* TODO nie dziala i robi blad */}
+        
         <div className="grid gap-4">
           {createdProjects.map((project: any) => (
-            <ProjectCard key={project.id} project={project} />
+            <ProjectCard key={project.id} project={project}  currentUserId={user.id}/>
           ))}
           {joinedProjects
             .filter((p: any) => !createdProjects.some((cp: any) => cp.id === p.id))
             .map((project: any) => (
-              <ProjectCard key={project.id} project={project} />
+              <ProjectCard key={project.id} project={project}  currentUserId={user.id}/>
             ))}
         </div>
       </div>

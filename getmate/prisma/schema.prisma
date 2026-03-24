@@ -116,8 +116,6 @@ model Project {
   category       ProjectCategory @default(WEB)
   status         ProjectStatus   @default(HIRING)
   applications   Application[]
-
-  // Removed invalid @@index([name]) - no 'name' field exists
 }
 
 model Application {

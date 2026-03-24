@@ -284,30 +284,3 @@ export async function markNotificationAsRead(id: string) {
   });
   revalidatePath("/"); // Odświeża dane w komponentach Server Components
 }
-
-export async function getLatestCommits(repoUrl: string) {
-  // Regex do wyciągnięcia właściciela i nazwy repo z URL
-  const match = repoUrl.match(/github\.com\/([^/]+)\/([^/]+)/);
-  if (!match) throw new Error("Nieprawidłowy link do GitHub");
-
-  const [_, owner, repo] = match;
-  
-  const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/commits?per_page=5`, {
-    headers: {
-      'Accept': 'application/vnd.github.v3+json',
-      // Jeśli będziesz miał dużo zapytań, tutaj dodasz "Authorization": "token ..."
-    },
-    next: { revalidate: 3600 } // Cache na godzinę
-  });
-
-  if (!response.ok) throw new Error("Nie udało się pobrać commitów");
-
-  const data = await response.json();
-  
-  // Zwracamy tylko to co potrzebne, żeby nie zaśmiecać pamięci
-  return data.map((item: any) => ({
-    message: item.commit.message,
-    date: new Date(item.commit.committer.date).toLocaleDateString(),
-    url: item.html_url
-  }));
-}

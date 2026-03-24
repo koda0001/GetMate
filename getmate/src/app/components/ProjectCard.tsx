@@ -45,7 +45,7 @@ export function ProjectCard({ project, currentUserId }: { project: any, currentU
         </div>
         <p className="font-mono text-base">{project.description}</p>
         <UserParticipantStack
-          users={project.subscriberUsers}
+          users={project.subscribers}
           roles={project.roleDefinitions}
           maxSlots={project.slots}
         />
