@@ -5,8 +5,10 @@ import { deleteProject, updateProject, acceptApplication, rejectApplication } fr
 import { SubmitButton } from "@/app/components/SubmitButton";
 import { DeleteButton } from "@/app/components/DeleteButton";
 import { SlotsGrid } from "@/app/components/SlotsGrid";
+import { ProjectStatusBadge } from "@/app/components/ProjectStatusBadge";
 import Link from "next/link";
 import { TechStackSelector } from "@/app/components/TechStackSelector";
+import { UserCard } from "@/app/components/UserCard";
 
 // POPRAWKA: params jest teraz Promise
 export default async function EditProjectPage(props: { params: Promise<{ id: string }> }) {
@@ -22,6 +24,8 @@ export default async function EditProjectPage(props: { params: Promise<{ id: str
       applications: { include: { user: true } },
     },
   });
+
+  const statuses =  ["HIRING", "IN_PROGRESS", "COMPLETED", "CANCELED"];
 
   if (!project) redirect("/");
 
@@ -100,15 +104,37 @@ export default async function EditProjectPage(props: { params: Promise<{ id: str
             </label>
           </div>
 
-            <div>
-              <label className="text-sm font-medium">GitHub Repository</label>
-              <input name="github" className="w-full p-2 border rounded" placeholder="https://github.com/..." defaultValue={project.github || ""}/>
+          <div>
+            <label className="text-sm font-medium">GitHub Repository</label>
+            <input name="github" className="w-full p-2 border rounded" placeholder="https://github.com/..." defaultValue={project.github || ""}/>
+          </div>
+
+          <div>
+            <label className="text-sm font-medium">Discord</label>
+            <input name="discord" className="w-full p-2 border rounded" placeholder="https://discord.gg/..." defaultValue={project.discord || ""}/>
+          </div>
+
+          <div className="flex items-center justify-between p-3 border-3 border-[#30364F] bg-[#FDFDEE] shadow-[4px_4px_0_0_#30364F] transition-all">
+            <div className="flex items-center gap-3">
+              <span className="font-black uppercase text-[16px] px-2 py-0.5">
+                Status:
+              </span>
+              <ProjectStatusBadge project={project} />
             </div>
 
-            <div>
-              <label className="text-sm font-medium">Discord</label>
-              <input name="discord" className="w-full p-2 border rounded" placeholder="https://discord.gg/..." defaultValue={project.discord || ""}/>
-            </div>
+            <select 
+              name="status" 
+              defaultValue={project.status} 
+              className="p-2 border-2 border-black bg-white font-mono text-sm font-bold cursor-pointer hover:bg-[#A3E635] hover:shadow-[2px_2px_0_0_#000] active:translate-y-0.5 outline-none transition-all"
+            >
+              {statuses.map(status => (
+                <option key={status} value={status} className="font-bold">
+                  {status.toUpperCase()}
+                </option>
+              ))}
+            </select>
+          </div>
+
 
           <div className="pt-4">
             <SubmitButton />
@@ -150,11 +176,6 @@ export default async function EditProjectPage(props: { params: Promise<{ id: str
             </h3>
           </div>
 
-          <div className="space-y-3">
-            <h3 className="text-xs font-bold uppercase text-[#30364F] tracking-widest px-1">Current Openings</h3>
-            
-          </div>
-
         </div>
       )}
 
@@ -178,6 +199,7 @@ export default async function EditProjectPage(props: { params: Promise<{ id: str
             <ul className="space-y-2">
               {project.applications.filter(a => a.status === "PENDING").map(a => (
                 <li key={a.id} className="flex items-center gap-3 border p-2 rounded bg-[#F0F0DB]">
+                  <UserCard key={a.user?.id} user={a.user} />
                   <span className="font-mono">{a.user?.name || a.userId}</span>
                   <span className="text-xs bg-[#E1D9BC] border border-[#30364F] px-2 py-1 rounded">{project.roleDefinitions[a.slotIndex]}</span>
                   <a href={`/profile/${a.userId}`} className="underline text-blue-700 text-xs">Profile</a>

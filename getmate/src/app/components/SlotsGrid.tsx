@@ -17,7 +17,10 @@ export function SlotsGrid({
   const ROLE_OPTIONS = [
     "Programmer",
     "Graphic Designer",
-    "Project Manager"
+    "Project Manager",
+    "QA Tester",
+    "Data Scientist",
+    "UI/UX Designer"
   ];
   const [slotsCount, setSlotsCount] = useState(project?.slots || 1);
   const router = useRouter();

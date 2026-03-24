@@ -4,6 +4,7 @@ import { db } from "@/server/db";
 import { auth } from "@/server/auth";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import type { ProjectStatus } from "generated/prisma";
 
 // Each exported function is a "Job" the front-end can ask the server to do.
 export async function createProject(formData: FormData) {
@@ -19,7 +20,7 @@ export async function createProject(formData: FormData) {
   const slots = Number(formData.get("slots"));
   const isPrivate = formData.get("private") === "on";
   const roleDefinitions = formData.getAll("slot_role") as string[];
-  const techStack = formData.getAll("techStack") as string[]; // <-- NEW
+  const techStack = formData.getAll("techStack") as string[];
   
   // 3. DATABASE EXECUTION (The Chef)
   await db.project.create({
@@ -32,7 +33,7 @@ export async function createProject(formData: FormData) {
       subscribers: Array(slots).fill(""),
       roleDefinitions: roleDefinitions.length === slots ? roleDefinitions : Array(slots).fill("Programmer"),
       private: isPrivate,
-      techStack, // <-- NEW
+      techStack,
       authorId: session.user.id,
     },
   });
@@ -58,7 +59,8 @@ export async function updateProject(formData: FormData) {
   const subscribers = formData.getAll("slot_description") as string[];
   const roleDefinitions = formData.getAll("slot_role") as string[];
   const isPrivate = formData.get("private") === "on";
-  const techStack = formData.getAll("techStack") as string[]; // <-- NEW
+  const techStack = formData.getAll("techStack") as string[];
+  const status = formData.get("status") as ProjectStatus;
   
   
   // 3. AUTHENTICATION (The Bouncer)
@@ -85,7 +87,8 @@ export async function updateProject(formData: FormData) {
       roleDefinitions: roleDefinitions.length === slots ? roleDefinitions : Array(slots).fill("Programmer"),
       authorId: session.user.id,
       private: isPrivate,
-      techStack, // <-- NEW
+      techStack,
+      status,
     },
   });
   

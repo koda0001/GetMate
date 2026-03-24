@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { createProject } from "../actions"; 
 import { SubmitButton } from "@/app/components/SubmitButton";
+import { SlotsGrid } from "@/app/components/SlotsGrid";
 import Link from "next/link";
 import { TechStackSelector } from "@/app/components/TechStackSelector";
 
@@ -61,6 +62,11 @@ export default function NewProjectPage() {
             <div>
               <label className="text-sm font-medium">GitHub Repository</label>
               <input name="github" className="w-full p-2 border rounded" placeholder="https://github.com/..." />
+            </div>
+
+            <div>
+              <label className="text-sm font-medium">Discord</label>
+              <input name="discord" className="w-full p-2 border rounded" placeholder="https://discord.gg/..." />
             </div>
             
             <div>
