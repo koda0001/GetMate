@@ -7,13 +7,13 @@ generator client {
 }
 
 datasource db {
-  provider = "cockroachdb"
+  provider = "postgresql"
   url      = env("DATABASE_URL") // DO NOT REMOVE THIS LINE! Required for Prisma CLI.
   // url property deprecated in Prisma 7, see prisma.config.ts for connection
 }
 
 model Post {
-    id        Int      @id @default(sequence())
+    id        Int      @id @default(autoincrement())
     name      String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -22,7 +22,7 @@ model Post {
     createdById String
 
     @@index([name])
-}
+} 
 
 // Necessary for Next auth
 model Account {

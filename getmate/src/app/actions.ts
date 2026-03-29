@@ -176,7 +176,7 @@ export async function acceptApplication(formData: FormData) {
   if (!session) throw new Error("Log in first!");
   const applicationId = formData.get("applicationId") as string;
   const application = await db.application.findUnique({
-    where: { id: applicationId },
+    where: { id: applicationId }, 
     include: { project: true }
   });
   if (!application) throw new Error("Application not found");

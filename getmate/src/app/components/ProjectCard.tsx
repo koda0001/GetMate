@@ -70,7 +70,7 @@ export function ProjectCard({ project, currentUserId }: { project: any, currentU
                   <button
                     className="ml-auto px-3 py-1 bg-[#E1D9BC] border-2 border-[#30364F] rounded-sm shadow-[4px_4px_0_#30364F] font-bold active:translate-y-1 active:shadow-none"
                   >
-                    Edit
+                    
                   </button>
                 )}
               </div>
@@ -92,7 +92,7 @@ export function ProjectCard({ project, currentUserId }: { project: any, currentU
                     disabled={!!userId || isSubscribed}
                     onClick={e => { e.stopPropagation(); handleJoin(i, role); }}
                   >
-                    Join as {role}
+                    Apply
                   </button>
                 )}
               </div>
@@ -110,9 +110,9 @@ export function ProjectCard({ project, currentUserId }: { project: any, currentU
               ) : (
                 <button
                   className="ml-auto px-3 py-1 bg-[#E1D9BC] border-2 border-[#30364F] rounded-sm shadow-[4px_4px_0_#30364F] font-bold opacity-50 cursor-not-allowed"
-                  disabled
+                  disabled 
                 >
-                  Join as {role}
+                  Apply
                 </button>
               )}
               <div className="absolute left-1/2 -translate-x-1/2 top-12 z-20 hidden group-hover:block">

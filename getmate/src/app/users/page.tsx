@@ -23,6 +23,9 @@ export default async function UsersPage({
 
   return (
     <main className="p-8 max-w-4xl mx-auto">
+      <Link href="/" className="text-sm text-gray-500 hover:underline mb-8 block font-mono">
+        ← Back to home
+      </Link>
       <h1 className="text-3xl font-bold mb-8 text-[#30364F]">Community Members</h1>
       
       <UserSearch />

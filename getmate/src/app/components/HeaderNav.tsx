@@ -7,8 +7,8 @@ export function HeaderNav({ onLogin }: { onLogin: () => void }) {
   const { data: session } = useSession();
 
   return (
-    <header className="w-auto px-8 py-4 border-b-4 border-[#30364F] bg-[#E1D9BC] shadow-[0_4px_0_#30364F]">
-      <div className="font-bold text-2xl tracking-tight">GETMATE</div>
+    <header className="w-auto border-r-4 px-8 py-4 border-[#30364F] bg-[#E1D9BC] shadow-[0_4px_0_#30364F]">
+      <div className="font-bold text-4xl tracking-tight cursor-pointer" onClick={() => window.location.href = `/`}>GETMATE</div>
       <div className="flex gap-4">
         {session?.user ? (
           <div className="flex flex-col gap-3">
@@ -16,7 +16,7 @@ export function HeaderNav({ onLogin }: { onLogin: () => void }) {
               <img
                 src={session.user.image || "/default-profile.png"}
                 alt={session.user.name || "User"}
-                className="w-8 h-8 rounded-full border-2 border-[#30364F]"
+                className="w-12 h-12 rounded-full border-2 border-[#30364F]"
               />
               <span className="font-mono text-base text-[#30364F] font-bold">
                 {session.user.name || session.user.email || "User"}
