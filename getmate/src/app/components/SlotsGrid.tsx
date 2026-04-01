@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { joinProject } from "../actions";
+import { deleteSlot } from "../actions";
 import { useRouter } from "next/navigation";
 
 
@@ -42,7 +43,7 @@ export function SlotsGrid({
     }
   };
 
-const handleSlotsChange = (value: string) => {
+  const handleSlotsChange = (value: string) => {
     const num = parseInt(value) || 1;
     setSlotsCount(num);
     
@@ -60,6 +61,15 @@ const handleSlotsChange = (value: string) => {
       return nextRoles;
     });
   };
+
+  const handleRemoveSlot = async (index: number) => {
+    try {
+      await deleteSlot(project.id, index);
+      router.refresh();
+    } catch (err: any) {
+      alert(err.message);
+    }
+  }
 
   const handleRoleChange = (i: number, value: string) => {
     setRoleDefinitions((prev) => {
@@ -116,6 +126,13 @@ const handleSlotsChange = (value: string) => {
                     <option key={roleOpt} value={roleOpt}>{roleOpt}</option>
                   ))}
                 </select>
+                <button
+                  type="button"
+                  className="ml-2 px-3 py-1 font-bold text-[#30364F] bg-red-500 border-2 border-[#30364F] rounded shadow-[2px_2px_0_#30364F] hover:bg-red-600 transition"
+                  onClick={e => { e.stopPropagation(); handleRemoveSlot(i); }}
+                >
+                  X
+                </button>
                 {!isLoggedIn && (
                   <div className="ml-2 text-xs text-[#30364F] font-mono bg-[#E1D9BC] border-2 border-[#30364F] rounded-sm px-2 py-1 shadow-[2px_2px_0_#30364F]">
                     Sign in to participate

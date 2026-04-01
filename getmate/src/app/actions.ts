@@ -112,7 +112,7 @@ export async function deleteProject(formData: FormData) {
   });
   if (!project || project.authorId !== session.user.id) {
     throw new Error("To nie Twój projekt, ziomeczku!");
-}
+  }
 
   // 3. DATABASE EXECUTION (The Chef)
   await db.project.delete({
@@ -124,6 +124,59 @@ export async function deleteProject(formData: FormData) {
   // 4. UI UPDATE (The Notification)
   // This tells Next.js: "Hey, the list of projects changed, refresh the page!"
   redirect("/");
+}
+
+export async function deleteSlot(projectId: string, index: number) {
+  // 1. AUTHENTICATION & AUTHORIZATION
+  const session = await auth();
+  if (!session) throw new Error("Log in first!");
+  console.log("Attempting to delete slot", { projectId, index, userId: session.user.id });
+  const project = await db.project.findUnique({
+    where: { id: projectId }
+  });
+
+  if (!project) throw new Error("Project not found");
+  
+  // Sprawdzamy czy to na pewno właściciel usuwa slot
+  if (project.authorId !== session.user.id) {
+    throw new Error("Only the owner can delete slots");
+  }
+
+  // 2. LOGIC: Usuwamy element z obu tablic na podstawie indeksu
+  // Używamy filter, żeby stworzyć nowe tablice bez elementu o danym indeksie
+  const newRoleDefinitions = project.roleDefinitions.filter((_, i) => i !== index);
+  const newSubscribers = project.subscribers.filter((_, i) => i !== index);
+
+  console.log("New role definitions:", newRoleDefinitions);
+  console.log("New subscribers:", newSubscribers);
+
+  // Zmniejszamy też licznik slotów
+  const newSlotsCount = Math.max(0, project.slots - 1);
+
+  // 3. DATABASE UPDATE (Transaction)
+  await db.$transaction([
+    // Aktualizujemy projekt
+    db.project.update({
+      where: { id: projectId },
+      data: {
+        slots: newSlotsCount,
+        roleDefinitions: newRoleDefinitions,
+        subscribers: newSubscribers,
+      }
+    }),
+    // Opcjonalnie: Usuwamy oczekujące aplikacje na ten konkretny slot
+    // (Skoro slot znika, aplikacje na niego są już nieaktualne)
+    db.application.deleteMany({
+      where: {
+        projectId: projectId,
+        slotIndex: index
+      }
+    })
+  ]);
+
+  // 4. REVALIDATE (Odświeżamy cache, żeby zmiany były widoczne)
+  revalidatePath(`/edit-project/${projectId}`);
+  revalidatePath("/");
 }
 
 // Recruitment: User applies for a slot (creates Application with PENDING status)

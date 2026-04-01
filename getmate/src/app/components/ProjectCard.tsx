@@ -70,7 +70,7 @@ export function ProjectCard({ project, currentUserId }: { project: any, currentU
                   <button
                     className="ml-auto px-3 py-1 bg-[#E1D9BC] border-2 border-[#30364F] rounded-sm shadow-[4px_4px_0_#30364F] font-bold active:translate-y-1 active:shadow-none"
                   >
-                    
+                    Empty
                   </button>
                 )}
               </div>
