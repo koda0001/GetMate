@@ -236,7 +236,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\Admin\\Documents\\Coding\\React\\GetMate\\getmate\\generated\\prisma",
+      "value": "C:\\Users\\Admin\\Documents\\VSCODE\\GetMate\\getmate\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -250,7 +250,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\Admin\\Documents\\Coding\\React\\GetMate\\getmate\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Users\\Admin\\Documents\\VSCODE\\GetMate\\getmate\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -264,6 +264,7 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {

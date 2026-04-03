@@ -1,29 +1,46 @@
-# Create T3 App
+# 🕹️ GetMate – Stop Dreaming, Start Building.
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+**GetMate** to niszowa platforma networkingowa dla twórców, developerów i artystów, którzy mają pomysły, ale brakuje im "brakującego ogniwa" w zespole. Zapomnij o sztywnych ogłoszeniach o pracę – tutaj liczy się projekt, wizja i konkretne sloty do obsadzenia.
 
-## What's next? How do I make an app with this?
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Next.js](https://img.shields.io/badge/Next.js-14+-black.svg)
+![Prisma](https://img.shields.io/badge/Prisma-ORM-2D3748.svg)
+![Tailwind](https://img.shields.io/badge/Tailwind-CSS-38B2AC.svg)
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+---
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## 🎨 Aesthetic: Neo-Brutalist / Retro
+Projekt został zbudowany z myślą o unikalnym UX. Wykorzystujemy paletę **#E1D9BC** (papierowy beż) połączoną z ciężkimi, czarnymi obramowaniami (**#30364F**) i ostrymi cieniami. To hołd dla wczesnego internetu w nowoczesnym wydaniu.
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+---
 
-## Learn More
+## 🚀 Kluczowe Funkcje (MVP)
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+### 1. Zarządzanie Projektami (Project Owner)
+* **Dynamiczne Sloty:** Kreator ról (Programista, Grafik, PM) z możliwością dodawania i usuwania slotów w czasie rzeczywistym.
+* **Panel Rekrutacyjny:** System akceptowania i odrzucania kandydatów. Jedno kliknięcie i slot zostaje zajęty, a pozostali kandydaci otrzymują powiadomienie.
+* **Statusy:** Śledzenie fazy projektu: `Hiring`, `In Progress`, `Completed`, `Canceled`.
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+### 2. System Rekrutacji (Applicant)
+* **One-Click Apply:** Dołączanie do konkretnych ról w projekcie.
+* **Status Aplikacji:** Przejrzysty podgląd, czy Twoja prośba o dołączenie jest w fazie `Pending`, czy została zaakceptowana.
+* **Profile:** Każdy użytkownik posiada kartę profilową z historią ukończonych projektów i tech-stackiem.
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+### 3. Bezpieczeństwo i Technologia
+* **NextAuth:** Integracja z Google i GitHub dla szybkiego logowania.
+* **Server Actions:** Bezpieczna komunikacja z bazą danych bez zbędnych API endpoints.
+* **Prisma & PostgreSQL:** Solidny fundament danych z relacjami między użytkownikami, projektami i aplikacjami.
 
-## How do I deploy this?
+---
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+## 🛠️ Stack Technologiczny
+
+* **Framework:** Next.js 14 (App Router)
+* **Styling:** Tailwind CSS (Custom Neo-Brutalist Theme)
+* **Database:** PostgreSQL (via Prisma ORM)
+* **Auth:** NextAuth.js
+* **Icons:** Lucide React
+
+---
+
+## https://get-mate.vercel.app/
