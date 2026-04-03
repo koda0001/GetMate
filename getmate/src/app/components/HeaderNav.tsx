@@ -14,7 +14,7 @@ export function HeaderNav({ onLogin }: { onLogin: () => void }) {
           <div className="flex flex-col gap-3">
             <div className="flex items-center gap-2">
               <img
-                src={session.user.image || "/default-profile.png"}
+                src={session.user.image || "/default.png"}
                 alt={session.user.name || "User"}
                 className="w-12 h-12 rounded-full border-2 border-[#30364F]"
               />
